@@ -5,7 +5,7 @@ import avatar from '../../../img/avatar.png';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { followTC, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
-import { UserType } from '../../../bll/types';
+import { UserType } from '../../../dal/types';
 
 export const Users: React.FC = () => {
   const currentPage = useAppSelector(state => state.users.currentPage);

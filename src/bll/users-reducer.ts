@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { usersAPI } from '../dal/api';
 import axios from 'axios';
 import { handleAppError, handleNetworkError } from '../helpers/error-util';
-import { UserType } from './types';
+import { UserType } from '../dal/types';
 
 type initialStateType = {
   users: UserType[]

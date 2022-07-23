@@ -7,11 +7,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { appReducer } from './app-reducer';
 import { loginReducer } from './login-reducer';
 import { usersReducer } from './users-reducer';
+import { profileReducer } from './profile-reducer';
 
 const rootReducer = combineReducers({
     app: appReducer,
     login: loginReducer,
     users: usersReducer,
+    profile: profileReducer,
   },
 );
 

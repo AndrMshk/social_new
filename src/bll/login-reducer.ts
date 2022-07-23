@@ -1,7 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { setAppStatus } from './app-reducer';
 import { authAPI } from '../dal/api';
-import { LoginParamsType } from './types';
+import { LoginParamsType } from '../dal/types';
 import { handleAppError, handleNetworkError } from '../helpers/error-util';
 import axios from 'axios';
 
@@ -22,7 +22,7 @@ const slice = createSlice({
     login(
       state,
       action: PayloadAction<InitialStateType>) {
-      return {...state, ...action.payload}
+      return { ...state, ...action.payload };
     },
   },
 });
@@ -43,13 +43,11 @@ export const loginTC = (data: LoginParamsType) => async(dispatch: Dispatch) => {
     if (axios.isAxiosError(err)) {
       handleNetworkError(err.message, dispatch);
     }
-
   }
   dispatch(setAppStatus({ isLoading: false }));
 };
 
-export const logoutTC = (isAuth: boolean) => async (dispatch: Dispatch) => {
-
+export const logoutTC = (isAuth: boolean) => async(dispatch: Dispatch) => {
   dispatch(setAppStatus({ isLoading: true }));
   try {
     await authAPI.logoutRequest();
