@@ -8,17 +8,19 @@ import { ContentComponent } from './ui/content/Content';
 import { useAppDispatch, useAppSelector } from './bll/store';
 import { useDispatch } from 'react-redux';
 import { setAppInitializedTC } from './bll/app-reducer';
-import { useNavigate } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const App: React.FC = () => {
   const isInitialized = useAppSelector(state => state.app.isInitialized);
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(state => state.login.isAuth);
-  const navigate = useNavigate();
+  // const isAuth = useAppSelector(state => state.login.isAuth);
+  // const navigate = useNavigate();
 
-  useEffect(() => {dispatch(setAppInitializedTC());}, []);
+  useEffect(() => {
+    dispatch(setAppInitializedTC());
+    }, []);
 
   if (!isInitialized) {
     return <div style={

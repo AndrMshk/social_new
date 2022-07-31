@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'antd';
 import test from '../../../img/test.jpg';
 import style from './style.module.scss';
 import { Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { setStatusTC } from '../../../bll/profile-reducer';
+import { setAppInitializedTC } from '../../../bll/app-reducer';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
   const me = useAppSelector(state => state.profile.profile);
   const status = useAppSelector(state => state.profile.status);
   const email = useAppSelector(state => state.login.email);
+  const isAuth = useAppSelector(state => state.login.isAuth)
   const { Paragraph } = Typography;
   const [avatar, setAvatar] = useState(test);
 
@@ -35,9 +37,6 @@ export const Profile = () => {
       <Paragraph editable={{ tooltip: false, onChange: changeStatusHandler }}>
         {status}
       </Paragraph>
-      <p>make form for posts</p>
-      <p>make followed users</p>
-      <p>make find of users</p>
     </div>
   );
 };

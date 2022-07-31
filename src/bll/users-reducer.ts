@@ -5,8 +5,9 @@ import axios from 'axios';
 import { handleAppError, handleNetworkError } from '../helpers/error-util';
 import { UserType } from '../dal/types';
 
-type initialStateType = {
+type InitialStateType = {
   users: UserType[]
+  followedUsers: UserType[],
   pageSize: number
   totalUsersCount: number
   currentPage: number
@@ -18,16 +19,20 @@ const slice = createSlice({
   name: 'users',
   initialState: {
     users: [],
-    pageSize: 9,
+    followedUsers: [],
+    pageSize: 8,
     totalUsersCount: 0,
     currentPage: 1,
     loading: false,
     followingInProgress: [],
-  } as initialStateType,
+  } as InitialStateType,
   reducers: {
     setUsers(state, action: PayloadAction<{ users: UserType[], totalUsersCount: number }>) {
       state.users = action.payload.users.map(el => ({ ...el, key: el.id }));
       state.totalUsersCount = action.payload.totalUsersCount;
+    },
+    setFollowedUsers(state, action: PayloadAction<{ users: UserType[] }>) {
+      state.followedUsers = action.payload.users.map(el => ({ ...el, key: el.id }));
     },
     toggleLoading(state, action: PayloadAction<{ isLoading: boolean }>) {
       state.loading = action.payload.isLoading;
@@ -51,7 +56,11 @@ const slice = createSlice({
 });
 
 export const usersReducer = slice.reducer;
-export const { setUsers, toggleLoading, toggleFollow, toggleFollowingInProgress, setCurrentPage } = slice.actions;
+export const {
+  setUsers, toggleLoading,
+  toggleFollow, toggleFollowingInProgress, setCurrentPage,
+  setFollowedUsers,
+} = slice.actions;
 
 export const setUsersTC = (currentPage: number, pageSize: number) => async(dispatch: Dispatch) => {
   dispatch(toggleLoading({ isLoading: true }));
@@ -59,6 +68,33 @@ export const setUsersTC = (currentPage: number, pageSize: number) => async(dispa
   try {
     const res = await usersAPI.getUsers(currentPage, pageSize);
     dispatch(setUsers({ users: res.data.items, totalUsersCount: res.data.totalCount }));
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      handleNetworkError(err.message, dispatch);
+    }
+  }
+  dispatch(toggleLoading({ isLoading: false }));
+};
+
+export const setFollowedUsersTC = () => async(dispatch: Dispatch) => {
+  dispatch(toggleLoading({ isLoading: true }));
+  try {
+    const res = await usersAPI.getFollowedUsers(true);
+    dispatch(setFollowedUsers({ users: res.data.items }));
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      handleNetworkError(err.message, dispatch);
+    }
+  }
+  dispatch(toggleLoading({ isLoading: false }));
+};
+
+export const findUsersTC = (name: string) => async(dispatch: Dispatch) => {
+  dispatch(toggleLoading({ isLoading: true }));
+  try {
+    const res = await usersAPI.findUsers(name);
+    console.log(res);
+    // dispatch(setUsers({ users: res.data.items, totalUsersCount: res.data.totalCount }));
   } catch (err) {
     if (axios.isAxiosError(err)) {
       handleNetworkError(err.message, dispatch);

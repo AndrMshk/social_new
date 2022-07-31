@@ -15,6 +15,16 @@ export const usersAPI = {
       instance
         .get(`users?page=${currentPage}&count=${pageSize}`));
   },
+  getFollowedUsers(friend: boolean) {
+    return (
+      instance
+        .get(`users?friend=${friend}`));
+  },
+  findUsers(term: string) {
+    return (
+      instance
+        .get(`users?term${term}`));
+  },
   followPostRequest(userId: number) {
     return (
       instance

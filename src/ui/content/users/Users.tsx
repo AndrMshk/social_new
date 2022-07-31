@@ -4,8 +4,11 @@ import type { ColumnsType } from 'antd/es/table';
 import avatar from '../../../img/avatar.png';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { followTC, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
+import { findUsersTC, followTC, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
 import { UserType } from '../../../dal/types';
+import { Input } from 'antd';
+
+const { Search } = Input;
 
 export const Users: React.FC = () => {
   const currentPage = useAppSelector(state => state.users.currentPage);
@@ -59,9 +62,14 @@ export const Users: React.FC = () => {
     },
   ];
 
+  const onSearch = (value: string) => {
+    dispatch(findUsersTC(value))
+  }
+  // don't work
+
   useEffect(() => {
     dispatch(setUsersTC(currentPage, pageSize));
-  }, []);
+  }, [currentPage, pageSize]);
 
   const onChange: PaginationProps['onChange'] = (current, pageSize) => {
     dispatch(setUsersTC(current, pageSize));
@@ -69,6 +77,7 @@ export const Users: React.FC = () => {
 
   return (
     <>
+      <Search placeholder="input search text" allowClear onSearch={onSearch} style={{ width: 200 }} />
       <Table
         style={{ height: '400px' }}
         loading={loading}

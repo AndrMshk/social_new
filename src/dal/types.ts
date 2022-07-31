@@ -45,7 +45,11 @@ export type ProfileType = {
   }
 }
 
-
+export type getUsersParamsType = {
+  currentPage?: number,
+  pageSize?: number,
+  friend?: boolean
+}
 
 export type ttt = {
   items: {
@@ -62,8 +66,7 @@ export type ttt = {
   error: string
 }
 
-
-type xxx= {
+type xxx = {
   count: number
 
   page: number

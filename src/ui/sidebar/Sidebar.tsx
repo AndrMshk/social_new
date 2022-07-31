@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MailOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../bll/store';
+import { useAppDispatch, useAppSelector } from '../../bll/store';
+import { setFollowedUsersTC } from '../../bll/users-reducer';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -24,33 +25,27 @@ function getItem(
   } as MenuItem;
 }
 
-// сделать массив юзеров которые фолов и при фолове пушить пользователя в массив а потом его отрисовывать
-// запрос на сервер все юзеров и потом их фильтровать это пизда
-// но когда при перезагрузке будет все теряться
-// подумать как сделать рпавильно
-
-
 export const SidebarComponent: React.FC = () => {
+
+  const dispatch = useAppDispatch();
+
   const onClick: MenuProps['onClick'] = e => {
     console.log('click ', e);
   };
-  const followedUsers = useAppSelector(state => state.users.users)
-    .filter(el=>(el.followed))
-    .map(el=>({label: el.name, key: el.id}))
-
+  const followedUsers = useAppSelector(state => state.users.followedUsers)
+    .map(el => ({ label: el.name, key: el.id }));
 
   const items: MenuProps['items'] = [
     getItem(<Link to="/profile">Profile</Link>, 'n1', <UserOutlined />),
     getItem(<Link to="/messages">Messages</Link>, 'n2', <MailOutlined />),
     getItem(<Link to="/users">Users</Link>, 'n3', <TeamOutlined />),
-    getItem('Followed users', 'sub2', null,
-      followedUsers,
-      // [
-      //   getItem('Followed users1', '4'),
-      //   getItem('Followed users2', '5'),
-      // ]
-    ),
+    getItem('Followed users', 'sub2', null, followedUsers),
   ];
+
+  useEffect(() => {
+    dispatch(setFollowedUsersTC());
+  }, [followedUsers.length]);
+
   return (
     <Menu
       onClick={onClick}
