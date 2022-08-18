@@ -10,20 +10,10 @@ const instance = axios.create({
 });
 
 export const usersAPI = {
-  getUsers(currentPage: number, pageSize: number) {
+  getUsers(params: GetUsersParamsType) {
     return (
       instance
-        .get(`users?page=${currentPage}&count=${pageSize}`));
-  },
-  getFollowedUsers(friend: boolean) {
-    return (
-      instance
-        .get(`users?friend=${friend}`));
-  },
-  findUsers(term: string) {
-    return (
-      instance
-        .get(`users?term${term}`));
+        .get(`users`, {params: {...params}}));
   },
   followPostRequest(userId: number) {
     return (
@@ -76,3 +66,9 @@ export const profileAPI = {
   },
 };
 
+type GetUsersParamsType = {
+  count: number
+  page: number
+  term?: string
+  friend?: boolean
+}

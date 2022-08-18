@@ -1,6 +1,6 @@
 import { AnyAction, combineReducers } from 'redux';
 
-import thunk, { ThunkDispatch } from 'redux-thunk';
+import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { configureStore } from '@reduxjs/toolkit';
@@ -23,6 +23,7 @@ export const useAppDispatch = () => useDispatch<DispatchType>();
 export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
 
 export type RootStateType = ReturnType<typeof rootReducer>
+export type ThunkType<ReturnType = Promise<any> | void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
 
 export const store = configureStore({
   reducer: rootReducer,

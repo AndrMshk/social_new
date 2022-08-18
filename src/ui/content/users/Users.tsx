@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react';
-import { Image, PaginationProps, Switch, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Image, Input, PaginationProps, Switch, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import avatar from '../../../img/avatar.png';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { findUsersTC, followTC, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
+import { followTC, setSearchUserName, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
 import { UserType } from '../../../dal/types';
-import { Input } from 'antd';
 
 const { Search } = Input;
 
 export const Users: React.FC = () => {
-  const currentPage = useAppSelector(state => state.users.currentPage);
-  const pageSize = useAppSelector(state => state.users.pageSize);
-  const users = useAppSelector(state => state.users.users);
+
   const loading = useAppSelector(state => state.users.loading);
-  const totalUsersCount = useAppSelector(state => state.users.totalUsersCount);
-  const dispatch = useAppDispatch();
   const followingInProgress = useAppSelector(state => state.users.followingInProgress);
   const error = useAppSelector(state => state.app.error);
+  const { currentPage, pageSize, searchUserName, users, totalUsersCount } =
+    useAppSelector(state => state.users);
+
+  const dispatch = useAppDispatch();
+
+  const [searchValue, setSearchValue] = useState<string | undefined>(searchUserName);
 
   const followingToggleHandler = (user: UserType) => {
     if (!user.followed) {
@@ -63,21 +64,27 @@ export const Users: React.FC = () => {
   ];
 
   const onSearch = (value: string) => {
-    dispatch(findUsersTC(value))
-  }
-  // don't work
+    if (value === '') {
+      dispatch(setSearchUserName({ name: undefined }));
+    } else {
+      dispatch(setSearchUserName({ name: value }));
+    }
+  };
 
   useEffect(() => {
-    dispatch(setUsersTC(currentPage, pageSize));
-  }, [currentPage, pageSize]);
+    dispatch(setUsersTC(currentPage, pageSize, searchUserName));
+  }, [searchUserName]);
 
   const onChange: PaginationProps['onChange'] = (current, pageSize) => {
-    dispatch(setUsersTC(current, pageSize));
+    dispatch(setUsersTC(current, pageSize, searchUserName));
   };
 
   return (
     <>
-      <Search placeholder="input search text" allowClear onSearch={onSearch} style={{ width: 200 }} />
+      <Search value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              placeholder="input search text" allowClear onSearch={onSearch}
+              style={{ width: 200 }} />
       <Table
         style={{ height: '400px' }}
         loading={loading}

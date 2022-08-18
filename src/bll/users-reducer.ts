@@ -4,28 +4,20 @@ import { usersAPI } from '../dal/api';
 import axios from 'axios';
 import { handleAppError, handleNetworkError } from '../helpers/error-util';
 import { UserType } from '../dal/types';
-
-type InitialStateType = {
-  users: UserType[]
-  followedUsers: UserType[],
-  pageSize: number
-  totalUsersCount: number
-  currentPage: number
-  loading: boolean
-  followingInProgress: number[]
-}
+import { ThunkType } from './store';
 
 const slice = createSlice({
   name: 'users',
   initialState: {
-    users: [],
-    followedUsers: [],
+    users: [] as UserType[],
+    followedUsers: [] as UserType[],
     pageSize: 8,
     totalUsersCount: 0,
     currentPage: 1,
     loading: false,
-    followingInProgress: [],
-  } as InitialStateType,
+    followingInProgress: [] as number[],
+    searchUserName: undefined as string | undefined,
+  },
   reducers: {
     setUsers(state, action: PayloadAction<{ users: UserType[], totalUsersCount: number }>) {
       state.users = action.payload.users.map(el => ({ ...el, key: el.id }));
@@ -50,7 +42,11 @@ const slice = createSlice({
       }
     },
     setCurrentPage(state, action: PayloadAction<{ page: number }>) {
+      debugger
       state.currentPage = action.payload.page;
+    },
+    setSearchUserName(state, action: PayloadAction<{ name: string | undefined }>) {
+      state.searchUserName = action.payload.name;
     },
   },
 });
@@ -59,14 +55,14 @@ export const usersReducer = slice.reducer;
 export const {
   setUsers, toggleLoading,
   toggleFollow, toggleFollowingInProgress, setCurrentPage,
-  setFollowedUsers,
+  setFollowedUsers, setSearchUserName,
 } = slice.actions;
 
-export const setUsersTC = (currentPage: number, pageSize: number) => async(dispatch: Dispatch) => {
+export const setUsersTC = (
+  page: number, pageSize: number, name?: string | undefined): ThunkType => async(dispatch, getState) => {
   dispatch(toggleLoading({ isLoading: true }));
-  dispatch(setCurrentPage({ page: currentPage }));
   try {
-    const res = await usersAPI.getUsers(currentPage, pageSize);
+    const res = await usersAPI.getUsers({ page, count: pageSize, term: name });
     dispatch(setUsers({ users: res.data.items, totalUsersCount: res.data.totalCount }));
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -76,25 +72,11 @@ export const setUsersTC = (currentPage: number, pageSize: number) => async(dispa
   dispatch(toggleLoading({ isLoading: false }));
 };
 
-export const setFollowedUsersTC = () => async(dispatch: Dispatch) => {
+export const setFriendsTC = () => async(dispatch: Dispatch) => {
   dispatch(toggleLoading({ isLoading: true }));
   try {
-    const res = await usersAPI.getFollowedUsers(true);
+    const res = await usersAPI.getUsers({ page: 1, count: 100, friend: true });
     dispatch(setFollowedUsers({ users: res.data.items }));
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      handleNetworkError(err.message, dispatch);
-    }
-  }
-  dispatch(toggleLoading({ isLoading: false }));
-};
-
-export const findUsersTC = (name: string) => async(dispatch: Dispatch) => {
-  dispatch(toggleLoading({ isLoading: true }));
-  try {
-    const res = await usersAPI.findUsers(name);
-    console.log(res);
-    // dispatch(setUsers({ users: res.data.items, totalUsersCount: res.data.totalCount }));
   } catch (err) {
     if (axios.isAxiosError(err)) {
       handleNetworkError(err.message, dispatch);

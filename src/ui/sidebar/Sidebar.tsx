@@ -5,7 +5,7 @@ import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { setFollowedUsersTC } from '../../bll/users-reducer';
+import { setFriendsTC } from '../../bll/users-reducer';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -43,18 +43,17 @@ export const SidebarComponent: React.FC = () => {
   ];
 
   useEffect(() => {
-    dispatch(setFollowedUsersTC());
+    dispatch(setFriendsTC());
   }, [followedUsers.length]);
 
   return (
     <Menu
       onClick={onClick}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', overflowY: 'scroll', overflowX: 'hidden' }}
       // defaultSelectedKeys={['1']}
       defaultOpenKeys={['sub1']}
       mode="inline"
       items={items}
-
     />
   );
 };
