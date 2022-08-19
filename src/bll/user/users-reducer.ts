@@ -1,10 +1,12 @@
 import { Dispatch } from 'redux';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { usersAPI } from '../dal/api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { usersAPI } from '../../dal/api';
 import axios from 'axios';
-import { handleAppError, handleNetworkError } from '../helpers/error-util';
-import { UserType } from '../dal/types';
-import { ThunkType } from './store';
+import { handleAppError, handleNetworkError } from '../../helpers/error-util';
+import { UserType } from '../../dal/types';
+import { ThunkType } from '../store';
+
+
 
 const slice = createSlice({
   name: 'users',

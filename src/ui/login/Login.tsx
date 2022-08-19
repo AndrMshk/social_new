@@ -2,8 +2,10 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useEffect } from 'react';
 import style from './style.module.scss';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { loginTC } from '../../bll/login-reducer';
+import { loginAsyncActions } from '../../bll/login/login-async-actions';
 import { useNavigate } from 'react-router-dom';
+
+const {loginTC} = loginAsyncActions
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();

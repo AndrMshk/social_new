@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { setAppError, setAppStatus } from '../bll/app-reducer';
+import { setAppError, setAppStatus } from '../bll/app/app-reducer';
 import { ResponseTypeAPI } from '../dal/types';
 
 export const handleAppError = <Data>(

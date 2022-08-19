@@ -6,9 +6,9 @@ import { HeaderComponent } from './ui/header/Header';
 import { SidebarComponent } from './ui/sidebar/Sidebar';
 import { ContentComponent } from './ui/content/Content';
 import { useAppDispatch, useAppSelector } from './bll/store';
-import { useDispatch } from 'react-redux';
-import { setAppInitializedTC } from './bll/app-reducer';
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { appAsyncActions } from './bll/app/app-async-actions';
+
+const { setAppInitializedTC } = appAsyncActions;
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(setAppInitializedTC());
-    }, []);
+  }, []);
 
   if (!isInitialized) {
     return <div style={

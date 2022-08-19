@@ -4,10 +4,10 @@ import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { configureStore } from '@reduxjs/toolkit';
-import { appReducer } from './app-reducer';
-import { loginReducer } from './login-reducer';
-import { usersReducer } from './users-reducer';
-import { profileReducer } from './profile-reducer';
+import { appReducer } from './app/app-reducer';
+import { loginReducer } from './login/login-reducer';
+import { usersReducer } from './user/users-reducer';
+import { profileReducer } from './profile/profile-reducer';
 
 const rootReducer = combineReducers({
     app: appReducer,

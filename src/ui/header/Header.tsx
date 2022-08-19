@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { logoutTC } from '../../bll/login-reducer';
 import test from '../../img/test.jpg';
+import { loginAsyncActions } from '../../bll/login/login-async-actions';
 
+const { logoutTC } = loginAsyncActions;
 
 export const HeaderComponent = () => {
   const dispatch = useAppDispatch();
@@ -12,13 +13,13 @@ export const HeaderComponent = () => {
   const isAuth = useAppSelector(state => state.login.isAuth);
   const me = useAppSelector(state => state.profile.profile);
 
-  const logoutHandler = () => dispatch(logoutTC(false));
+  const logoutHandler = () => dispatch(logoutTC());
 
   return (
     <>
       <div>
         <Row>
-          <Col span={8}><img src={test} alt="logo" style={{height: '30px'}}/></Col>
+          <Col span={8}><img src={test} alt="logo" style={{ height: '30px' }} /></Col>
           <Col span={8}>{me ? me.fullName : null}</Col>
           <Col span={8}>
             {isAuth

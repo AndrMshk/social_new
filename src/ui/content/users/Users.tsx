@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import avatar from '../../../img/avatar.png';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { followTC, setSearchUserName, setUsersTC, unFollowTC } from '../../../bll/users-reducer';
+import { followTC, setSearchUserName, setUsersTC, unFollowTC } from '../../../bll/user/users-reducer';
 import { UserType } from '../../../dal/types';
 
 const { Search } = Input;

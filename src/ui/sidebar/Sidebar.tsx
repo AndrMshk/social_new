@@ -5,7 +5,7 @@ import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { setFriendsTC } from '../../bll/users-reducer';
+import { setFriendsTC } from '../../bll/user/users-reducer';
 
 type MenuItem = Required<MenuProps>['items'][number];
 

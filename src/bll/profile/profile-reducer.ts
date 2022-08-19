@@ -1,6 +1,6 @@
-import { ProfileType } from '../dal/types';
+import { ProfileType } from '../../dal/types';
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { profileAPI } from '../dal/api';
+import { profileAPI } from '../../dal/api';
 
 type InitialStateType = {
   postsData: { id: number, message: string, likeCounts: number }[]

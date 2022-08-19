@@ -3,7 +3,7 @@ import { Image, Typography } from 'antd';
 import test from '../../../img/test.jpg';
 import style from './style.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { setStatusTC } from '../../../bll/profile-reducer';
+import { setStatusTC } from '../../../bll/profile/profile-reducer';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
