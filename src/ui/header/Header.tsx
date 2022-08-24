@@ -11,7 +11,7 @@ export const HeaderComponent = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isAuth = useAppSelector(state => state.login.isAuth);
-  const me = useAppSelector(state => state.profile.profile);
+  const email = useAppSelector(state => state.login.email);
 
   const logoutHandler = () => dispatch(logoutTC());
 
@@ -20,7 +20,7 @@ export const HeaderComponent = () => {
       <div>
         <Row>
           <Col span={8}><img src={test} alt="logo" style={{ height: '30px' }} /></Col>
-          <Col span={8}>{me ? me.fullName : null}</Col>
+          <Col span={8}>{email ? email : null}</Col>
           <Col span={8}>
             {isAuth
               ? <Button onClick={logoutHandler}>Exit</Button>

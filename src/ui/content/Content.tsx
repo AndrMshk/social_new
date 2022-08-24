@@ -20,18 +20,16 @@ export const ContentComponent = () => {
   }
 
   if (isLoading) {
-    return <div className={style.container}><Spin size="large" /></div>
+    return <div className={style.container}><Spin size="large" /></div>;
   }
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Profile />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Profile />} />
+      <Route path="/profile/:userId" element={<Profile />} />
+      <Route path="/messages" element={<Messages />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 };

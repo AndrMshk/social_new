@@ -15,7 +15,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const App: React.FC = () => {
   const isInitialized = useAppSelector(state => state.app.isInitialized);
   const dispatch = useAppDispatch();
-  // const isAuth = useAppSelector(state => state.login.isAuth);
+  const isAuth = useAppSelector(state => state.login.isAuth);
   // const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const App: React.FC = () => {
       <Layout>
         <Header className="header"><HeaderComponent /></Header>
         <Layout className="content">
-          <Sider><SidebarComponent /></Sider>
+          {isAuth && <Sider><SidebarComponent /></Sider>}
           <Content><ContentComponent /></Content>
         </Layout>
         <Footer className="footer"><FooterComponent /></Footer>
