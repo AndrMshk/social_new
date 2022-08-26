@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../bll/store';
 import test from '../../img/test.jpg';
 import { loginAsyncActions } from '../../bll/login/login-async-actions';
 
-const { logoutTC } = loginAsyncActions;
+const { logout } = loginAsyncActions;
 
 export const HeaderComponent = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ export const HeaderComponent = () => {
   const isAuth = useAppSelector(state => state.login.isAuth);
   const email = useAppSelector(state => state.login.email);
 
-  const logoutHandler = () => dispatch(logoutTC());
+  const logoutHandler = () => dispatch(logout());
 
   return (
     <>

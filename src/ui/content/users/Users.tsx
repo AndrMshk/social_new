@@ -4,10 +4,13 @@ import type { ColumnsType } from 'antd/es/table';
 import avatar from '../../../img/avatar.png';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { followTC, setSearchUserName, setUsersTC, unFollowTC } from '../../../bll/user/users-reducer';
 import { UserType } from '../../../dal/types';
+import { Link } from 'react-router-dom';
+import { usersAsyncActions } from '../../../bll/user/users-async-actions';
+import { setSearchUserNameReducer } from '../../../bll/user/users-reducer';
 
 const { Search } = Input;
+const {follow, unFollow, setUsers} = usersAsyncActions
 
 export const Users: React.FC = () => {
 
@@ -23,11 +26,12 @@ export const Users: React.FC = () => {
 
   const followingToggleHandler = (user: UserType) => {
     if (!user.followed) {
-      dispatch(followTC(user.id));
+      dispatch(follow(user.id));
     } else {
-      dispatch(unFollowTC(user.id));
+      dispatch(unFollow(user.id));
     }
   };
+
 
   const columns: ColumnsType<UserType> = [
     {
@@ -43,6 +47,7 @@ export const Users: React.FC = () => {
       title: 'name',
       dataIndex: 'name',
       key: 'name',
+      render: (_, user)=> <Link to={`/profile/${user.id}`}>{user.name}</Link>
     },
     {
       title: 'status',
@@ -65,18 +70,18 @@ export const Users: React.FC = () => {
 
   const onSearch = (value: string) => {
     if (value === '') {
-      dispatch(setSearchUserName({ name: undefined }));
+      dispatch(setSearchUserNameReducer({ name: undefined }));
     } else {
-      dispatch(setSearchUserName({ name: value }));
+      dispatch(setSearchUserNameReducer({ name: value }));
     }
   };
 
   useEffect(() => {
-    dispatch(setUsersTC(currentPage, pageSize, searchUserName));
+    dispatch(setUsers(currentPage, pageSize, searchUserName));
   }, [searchUserName]);
 
   const onChange: PaginationProps['onChange'] = (current, pageSize) => {
-    dispatch(setUsersTC(current, pageSize, searchUserName));
+    dispatch(setUsers(current, pageSize, searchUserName));
   };
 
   return (

@@ -56,6 +56,9 @@ export const profileAPI = {
       instance.get(`/profile/${userId}`)
     );
   },
+  updateProfile(updatedProfile: UpdateProfileModelType) {
+    return instance.put(`/profile`, updatedProfile);
+  },
   getStatus(userId: number) {
     return (
       instance.get(`/profile/status/${userId}`)
@@ -71,4 +74,8 @@ type GetUsersParamsType = {
   page: number
   term?: string
   friend?: boolean
+}
+
+type UpdateProfileModelType = {
+
 }

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../bll/store';
 import { loginAsyncActions } from '../../bll/login/login-async-actions';
 import { useNavigate } from 'react-router-dom';
 
-const {loginTC} = loginAsyncActions
+const { login } = loginAsyncActions;
 
 export const Login: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,13 +15,13 @@ export const Login: React.FC = () => {
   const isLoading = useAppSelector(state => state.app.isLoading);
 
   const onFinish = (values: any) => {
-    dispatch(loginTC(values));
+    dispatch(login(values));
     form.resetFields();
   };
 
   useEffect(() => {
     if (isAuth) {
-      navigate('/');
+      navigate('/profile');
     }
   }, [isAuth]);
 

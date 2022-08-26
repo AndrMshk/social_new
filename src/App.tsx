@@ -1,25 +1,28 @@
-import { Layout, Space, Spin } from 'antd';
+import { Layout, Modal, Space, Spin } from 'antd';
 import React, { useEffect } from 'react';
 import './App.css';
 import { FooterComponent } from './ui/footer/Footer';
+import { useAppDispatch, useAppSelector } from './bll/store';
 import { HeaderComponent } from './ui/header/Header';
 import { SidebarComponent } from './ui/sidebar/Sidebar';
 import { ContentComponent } from './ui/content/Content';
-import { useAppDispatch, useAppSelector } from './bll/store';
 import { appAsyncActions } from './bll/app/app-async-actions';
+import { setAppErrorReducer } from './bll/app/app-reducer';
 
-const { setAppInitializedTC } = appAsyncActions;
+const { setAppInitialized } = appAsyncActions;
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const App: React.FC = () => {
-  const isInitialized = useAppSelector(state => state.app.isInitialized);
+
   const dispatch = useAppDispatch();
+
+  const isInitialized = useAppSelector(state => state.app.isInitialized);
   const isAuth = useAppSelector(state => state.login.isAuth);
-  // const navigate = useNavigate();
+  const error = useAppSelector(state => state.app.error);
 
   useEffect(() => {
-    dispatch(setAppInitializedTC());
+    dispatch(setAppInitialized());
   }, []);
 
   if (!isInitialized) {
@@ -36,6 +39,14 @@ const App: React.FC = () => {
       </Space></div>;
   }
 
+  const errorModal = () => {
+    Modal.error({
+      title: 'Error',
+      content: (<div>{error}</div>),
+      onOk() {dispatch(setAppErrorReducer({ error: null }));},
+    });
+  };
+
   return (
     <>
       <Layout>
@@ -46,6 +57,7 @@ const App: React.FC = () => {
         </Layout>
         <Footer className="footer"><FooterComponent /></Footer>
       </Layout>
+      {error && errorModal()}
     </>
   );
 };

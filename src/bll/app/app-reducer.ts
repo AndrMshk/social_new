@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appAsyncActions } from './app-async-actions';
 
-const { setAppInitializedTC } = appAsyncActions;
+const { setAppInitialized } = appAsyncActions;
 
 type InitialStateType = {
   isLoading: boolean
@@ -27,20 +27,21 @@ const slice = createSlice({
     },
   } as InitialStateType,
   reducers: {
-    setAppStatus(state, action: PayloadAction<{ isLoading: boolean }>) {
+    setAppStatusReducer(state, action: PayloadAction<{ isLoading: boolean }>) {
       state.isLoading = action.payload.isLoading;
     },
-    setAppError(state, action: PayloadAction<{ error: string | null }>) {
+    setAppErrorReducer(state, action: PayloadAction<{ error: string | null }>) {
       state.error = action.payload.error;
     },
   },
   extraReducers: builder => {
-    builder.addCase(setAppInitializedTC.fulfilled, (state, action) => {
+    builder.addCase(setAppInitialized.fulfilled, (state, action) => {
       state.isInitialized = action.payload.isInitialized;
     });
   },
 });
 
 export const appReducer = slice.reducer;
-export const { setAppError, setAppStatus } = slice.actions;
+export const { setAppStatusReducer, setAppErrorReducer } = slice.actions;
+
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Messages } from './messages/Messages';
 import { Profile } from './profile/Profile';
 import { Users } from './users/Users';
@@ -15,9 +15,11 @@ export const ContentComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (!isAuth && location.pathname !== '/login') {
-    navigate('/login');
-  }
+  useEffect(() => {
+    if (!isAuth || location.pathname !== '/login') {
+      navigate('/login');
+    }
+  }, [isAuth]);
 
   if (isLoading) {
     return <div className={style.container}><Spin size="large" /></div>;
@@ -25,8 +27,9 @@ export const ContentComponent = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Profile />} />
+      <Route path={'/'} element={<Navigate to={'/profile'} />} />
       <Route path="/profile/:userId" element={<Profile />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/messages" element={<Messages />} />
       <Route path="/users" element={<Users />} />
       <Route path="/login" element={<Login />} />

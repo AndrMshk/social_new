@@ -5,7 +5,9 @@ import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { setFriendsTC } from '../../bll/user/users-reducer';
+import { usersAsyncActions } from '../../bll/user/users-async-actions';
+
+const { setFriends } = usersAsyncActions;
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,7 +31,6 @@ export const SidebarComponent: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuth = useAppSelector(state => state.login.isAuth);
 
   const onClick: MenuProps['onClick'] = e => {
     if (e.keyPath[1] === 'user') {
@@ -42,14 +43,14 @@ export const SidebarComponent: React.FC = () => {
     .map(el => ({ label: el.name, key: el.id }));
 
   const items: MenuProps['items'] = [
-    getItem('Profile', 'myProfile', <UserOutlined />),
+    getItem(<Link to="/profile">Profile</Link>, 'myProfile', <UserOutlined />),
     getItem(<Link to="/messages">Messages</Link>, 'messages', <MailOutlined />),
     getItem(<Link to="/users">Users</Link>, 'users', <TeamOutlined />),
     getItem('Followed users', 'user', null, followedUsers),
   ];
 
   useEffect(() => {
-    dispatch(setFriendsTC());
+    dispatch(setFriends());
   }, [followedUsers.length]);
 
   return (

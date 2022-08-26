@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loginAsyncActions } from './login-async-actions';
 
-const { loginTC, logoutTC } = loginAsyncActions;
+const { login, logout } = loginAsyncActions;
 
 type InitialStateType = {
   userId: number | null
@@ -17,21 +17,21 @@ const slice = createSlice({
     isAuth: false,
   } as InitialStateType,
   reducers: {
-    login(
+    loginLogoutReducer(
       state,
       action: PayloadAction<InitialStateType>) {
       return { ...state, ...action.payload };
     },
   },
   extraReducers: builder => {
-    builder.addCase(loginTC.fulfilled, (state, action) => ({ ...state, ...action.payload }))
-      .addCase(logoutTC.fulfilled, (state, action) => ({ ...state, ...action.payload }));
+    builder.addCase(login.fulfilled, (state, action) => ({ ...state, ...action.payload }))
+      .addCase(logout.fulfilled, (state, action) => ({ ...state, ...action.payload }));
   },
 
 });
 
 export const loginReducer = slice.reducer;
-export const { login } = slice.actions;
+export const { loginLogoutReducer } = slice.actions;
 
 
 
