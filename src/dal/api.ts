@@ -13,7 +13,7 @@ export const usersAPI = {
   getUsers(params: GetUsersParamsType) {
     return (
       instance
-        .get(`users`, {params: {...params}}));
+        .get(`users`, { params: { ...params } }));
   },
   followPostRequest(userId: number) {
     return (
@@ -27,6 +27,13 @@ export const usersAPI = {
       instance
         .delete(`/follow/${userId}`)
         .then((response) => response.data)
+    );
+  },
+  getIsFollowRequest(userId: number) {
+    return (
+      instance
+        .get(`/follow/${userId}`)
+        .then(response => response.data)
     );
   },
 };
@@ -67,6 +74,12 @@ export const profileAPI = {
   updateStatus(status: string) {
     return instance.put(`/profile/status`, { status });
   },
+  setPhoto(photoFile: any) {
+    const formData = new FormData();
+    formData.append('image', photoFile);
+    return instance.put(`/profile/photo`, formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } });
+  },
 };
 
 type GetUsersParamsType = {
@@ -76,6 +89,4 @@ type GetUsersParamsType = {
   friend?: boolean
 }
 
-type UpdateProfileModelType = {
-
-}
+type UpdateProfileModelType = {}

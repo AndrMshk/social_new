@@ -6,10 +6,7 @@ import { useAppDispatch, useAppSelector } from './bll/store';
 import { HeaderComponent } from './ui/header/Header';
 import { SidebarComponent } from './ui/sidebar/Sidebar';
 import { ContentComponent } from './ui/content/Content';
-import { appAsyncActions } from './bll/app/app-async-actions';
-import { setAppErrorReducer } from './bll/app/app-reducer';
-
-const { setAppInitialized } = appAsyncActions;
+import { setAppErrorReducer, setAppInitialized } from './bll/app/app-reducer';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -17,9 +14,8 @@ const App: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const isInitialized = useAppSelector(state => state.app.isInitialized);
+  const { isInitialized, error } = useAppSelector(state => state.app);
   const isAuth = useAppSelector(state => state.login.isAuth);
-  const error = useAppSelector(state => state.app.error);
 
   useEffect(() => {
     dispatch(setAppInitialized());

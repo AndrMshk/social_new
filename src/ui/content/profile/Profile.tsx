@@ -6,6 +6,9 @@ import { ProfileInfo } from './profileData/ProfileInfo';
 import { ProfileContacts } from './profileData/ProfileContacts';
 import { getStatus, setProfile } from '../../../bll/profile/profile-reducer';
 import { Spin } from 'antd';
+import { usersAsyncActions } from '../../../bll/user/users-reducer';
+
+const { getIsFriend } = usersAsyncActions;
 
 export type ProfileObjType = { [key: string]: any } | null
 
@@ -15,10 +18,8 @@ export const Profile = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const myUserId = useAppSelector(state => state.login.userId);
-  const isAuth = useAppSelector(state => state.login.isAuth);
-  const isLoading = useAppSelector(state => state.profile.isLoading);
-  const profile: ProfileObjType = useAppSelector(state => state.profile.profile);
+  const { userId: myUserId, isAuth } = useAppSelector(state => state.login);
+  const { isLoading, profile } = useAppSelector(state => state.profile);
 
   let userId = params.userId ? +params.userId : myUserId as number;
 
@@ -26,8 +27,11 @@ export const Profile = () => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(setProfile({ userId: userId }));
-      dispatch(getStatus({ userId: userId }));
+      dispatch(setProfile({ userId }));
+      dispatch(getStatus({ userId }));
+    }
+    if (userId !== myUserId) {
+      userId && dispatch(getIsFriend({ userId }));
     }
   }, [userId]);
 

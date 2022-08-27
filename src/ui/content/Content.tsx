@@ -10,10 +10,11 @@ import style from './style.module.scss';
 
 export const ContentComponent = () => {
 
-  const isLoading = useAppSelector(state => state.app.isLoading);
-  const isAuth = useAppSelector(state => state.login.isAuth);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isLoading = useAppSelector(state => state.app.isLoading);
+  const isAuth = useAppSelector(state => state.login.isAuth);
 
   useEffect(() => {
     if (!isAuth || location.pathname !== '/login') {

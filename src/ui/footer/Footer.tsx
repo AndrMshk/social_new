@@ -4,7 +4,7 @@ export const FooterComponent = () => {
   return (
     <>
       <div>
-        FOOTER i VCE
+        2022
       </div>
     </>
   );

@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Image, Switch, Typography } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons/lib';
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import test from '../../../../img/test.jpg';
 import { ProfileObjType } from '../Profile';
-import { usersAsyncActions } from '../../../../bll/user/users-async-actions';
-import { setStatus, updateProfileAbout } from '../../../../bll/profile/profile-reducer';
+import { setPhoto, setStatus, updateProfileAbout } from '../../../../bll/profile/profile-reducer';
+import { usersAsyncActions } from '../../../../bll/user/users-reducer';
 
 type ProfileInfoPropsType = {
   userId: number
@@ -15,21 +15,19 @@ const { follow, unFollow } = usersAsyncActions;
 
 export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profile }) => {
 
-  const status = useAppSelector(state => state.profile.status);
-  const isFollowedUser = useAppSelector(state => state.profile.isFollowedUser);
-  const myUserId = useAppSelector(state => state.login.userId);
-  const followingInProgress = useAppSelector(state => state.users.followingInProgress)
-
-  const { Paragraph } = Typography;
   const dispatch = useAppDispatch();
 
-  const [avatar, setAvatar] = useState(test);
+  const { status, isFollowedUser } = useAppSelector(state => state.profile);
+  const myUserId = useAppSelector(state => state.login.userId);
+  const followingInProgress = useAppSelector(state => state.users.followingInProgress);
 
-  const changeStatusHandler = (newStatus: string) => {
+  const { Paragraph } = Typography;
+
+  const changeStatusHandler = useCallback((newStatus: string) => {
     if (newStatus !== status) {
       dispatch(setStatus({ status: newStatus }));
     }
-  };
+  }, []);
 
   const updateProfileAboutHandler = (contact: string, value: string | boolean) => {
     if (!(profile) || profile[contact] !== value) {
@@ -37,13 +35,13 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
     }
   };
 
-  const followingToggleHandler = () => {
+  const followingToggleHandler = useCallback(() => {
     if (!isFollowedUser && userId) {
-      dispatch(follow(userId));
+      dispatch(follow({ userId: userId }));
     } else if (userId) {
-      dispatch(unFollow(userId));
+      dispatch(unFollow({ userId: userId }));
     }
-  };
+  }, [isFollowedUser]);
 
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -55,7 +53,7 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
           checkedChildren={<CheckOutlined />}
           unCheckedChildren={<CloseOutlined />}
           checked={isFollowedUser || false}
-          disabled={followingInProgress.some(el=> el === userId)}
+          disabled={followingInProgress.some(el => el === userId)}
         />}
         <Paragraph
           editable={userId === myUserId && { tooltip: false, onChange: changeStatusHandler }}>{status}</Paragraph>
@@ -69,7 +67,9 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
         </Paragraph>
       </div>
       <div style={{ display: 'inline-block' }}>
-        <Image width={200} src={profile?.photos.large || avatar} />
+        <Image width={200} src={profile?.photos.large || test} />
+        {userId === myUserId &&
+        <input type="file" onChange={e => {e.target.files && dispatch(setPhoto({ file: e.target.files[0] }));}} />}
       </div>
       <div style={{ display: 'inline-block' }}>
         <Typography.Title level={5} style={{ margin: 0 }}>
@@ -96,3 +96,4 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
     </div>
   );
 });
+

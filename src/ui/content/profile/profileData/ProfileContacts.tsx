@@ -11,9 +11,10 @@ type ProfileContactsPropsType = {
 
 export const ProfileContacts: FC<ProfileContactsPropsType> = React.memo(({ userId, profile }) => {
 
+  const dispatch = useAppDispatch();
+
   const myUserId = useAppSelector(state => state.login.userId);
 
-  const dispatch = useAppDispatch();
   const { Paragraph } = Typography;
 
   const updateProfileContactsHandler = (contact: string, value: string) => {

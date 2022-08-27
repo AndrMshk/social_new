@@ -5,7 +5,7 @@ import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { usersAsyncActions } from '../../bll/user/users-async-actions';
+import { usersAsyncActions } from '../../bll/user/users-reducer';
 
 const { setFriends } = usersAsyncActions;
 

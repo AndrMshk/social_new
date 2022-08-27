@@ -2,16 +2,18 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useEffect } from 'react';
 import style from './style.module.scss';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
-import { loginAsyncActions } from '../../bll/login/login-async-actions';
 import { useNavigate } from 'react-router-dom';
+import { loginAsyncActions } from '../../bll/login/login-reducer';
 
 const { login } = loginAsyncActions;
 
 export const Login: React.FC = () => {
+
   const dispatch = useAppDispatch();
-  const [form] = Form.useForm();
-  const isAuth = useAppSelector(state => state.login.isAuth);
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+
+  const isAuth = useAppSelector(state => state.login.isAuth);
   const isLoading = useAppSelector(state => state.app.isLoading);
 
   const onFinish = (values: any) => {

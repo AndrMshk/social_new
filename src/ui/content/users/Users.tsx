@@ -6,48 +6,47 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { UserType } from '../../../dal/types';
 import { Link } from 'react-router-dom';
-import { usersAsyncActions } from '../../../bll/user/users-async-actions';
-import { setSearchUserNameReducer } from '../../../bll/user/users-reducer';
+import { setSearchUserNameReducer, usersAsyncActions } from '../../../bll/user/users-reducer';
 
 const { Search } = Input;
-const {follow, unFollow, setUsers} = usersAsyncActions
+const { follow, unFollow, setUsers } = usersAsyncActions;
 
 export const Users: React.FC = () => {
 
-  const loading = useAppSelector(state => state.users.loading);
-  const followingInProgress = useAppSelector(state => state.users.followingInProgress);
-  const error = useAppSelector(state => state.app.error);
-  const { currentPage, pageSize, searchUserName, users, totalUsersCount } =
-    useAppSelector(state => state.users);
-
   const dispatch = useAppDispatch();
+
+  const {
+    currentPage,
+    pageSize,
+    searchUserName,
+    users,
+    totalUsersCount,
+    loading,
+    followingInProgress,
+  } = useAppSelector(state => state.users);
 
   const [searchValue, setSearchValue] = useState<string | undefined>(searchUserName);
 
   const followingToggleHandler = (user: UserType) => {
-    if (!user.followed) {
-      dispatch(follow(user.id));
-    } else {
-      dispatch(unFollow(user.id));
-    }
+    user.followed ? dispatch(unFollow({ userId: user.id })) : dispatch(follow({ userId: user.id }));
   };
-
 
   const columns: ColumnsType<UserType> = [
     {
       title: 'image',
       dataIndex: 'photos',
       key: 'image',
-      render: (photos) => <>{photos.small
-        ? <Image width={50} src={photos.small} />
-        : <img src={photos.small ? photos.small : avatar} style={{ width: '50px' }} />
-      }</>,
+      render: (photos) =>
+        <>{photos.small
+          ? <Image width={50} src={photos.small} />
+          : <img src={photos.small ? photos.small : avatar} style={{ width: '50px' }} />
+        }</>,
     },
     {
       title: 'name',
       dataIndex: 'name',
       key: 'name',
-      render: (_, user)=> <Link to={`/profile/${user.id}`}>{user.name}</Link>
+      render: (_, user) => <Link to={`/profile/${user.id}`}>{user.name}</Link>,
     },
     {
       title: 'status',
@@ -77,11 +76,11 @@ export const Users: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(setUsers(currentPage, pageSize, searchUserName));
+    dispatch(setUsers({ page: currentPage, pageSize, name: searchUserName }));
   }, [searchUserName]);
 
   const onChange: PaginationProps['onChange'] = (current, pageSize) => {
-    dispatch(setUsers(current, pageSize, searchUserName));
+    dispatch(setUsers({ page: current, pageSize, name: searchUserName }));
   };
 
   return (
