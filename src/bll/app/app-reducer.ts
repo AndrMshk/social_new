@@ -13,7 +13,8 @@ export const setAppInitialized = createAsyncThunk('app/set-initialized',
         const profileData = await profileAPI.getProfile(res.data.data.id);
         dispatch(setProfile(profileData.data));
         dispatch(getStatus({ userId: res.data.data.id }));
-        dispatch(loginLogoutReducer({ userId: res.data.data.id, email: res.data.data.email, isAuth: true }));
+        dispatch(
+          loginLogoutReducer({ userId: res.data.data.id, email: res.data.data.email, isAuth: true, captchaUrl: null }));
       } else {
         handleAppError(res.data, dispatch);
       }

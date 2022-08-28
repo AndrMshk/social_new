@@ -15,6 +15,7 @@ export const Users: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
+  const myUserId = useAppSelector(state => state.login.userId);
   const {
     currentPage,
     pageSize,
@@ -39,7 +40,7 @@ export const Users: React.FC = () => {
       render: (photos) =>
         <>{photos.small
           ? <Image width={50} src={photos.small} />
-          : <img src={photos.small ? photos.small : avatar} style={{ width: '50px' }} />
+          : <img src={photos.small ? photos.small : avatar} alt='avatar' style={{ width: '50px' }} />
         }</>,
     },
     {
@@ -62,7 +63,7 @@ export const Users: React.FC = () => {
         checkedChildren={<CheckOutlined />}
         unCheckedChildren={<CloseOutlined />}
         checked={user.followed}
-        disabled={followingInProgress.includes(user.id)}
+        disabled={followingInProgress.includes(user.id) || user.id === myUserId}
       />,
     },
   ];
@@ -88,7 +89,7 @@ export const Users: React.FC = () => {
       <Search value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
               placeholder="input search text" allowClear onSearch={onSearch}
-              style={{ width: 200 }} />
+              style={{ width: 200 }}/>
       <Table
         style={{ height: '400px' }}
         loading={loading}

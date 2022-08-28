@@ -46,10 +46,10 @@ export const authAPI = {
           AxiosResponse<ResponseTypeAPI<{ id: number, login: string, email: string }>>>(`auth/me`)
     );
   },
-  loginRequest(email: string, password: string, rememberMe: boolean = false) {
+  loginRequest(email: string, password: string, rememberMe: boolean = false, captcha: string | null = null) {
     return (
       instance.post<LoginParamsType, AxiosResponse<ResponseTypeAPI<{ userId: number }>>>
-      (`/auth/login`, { email, password, rememberMe })
+      (`/auth/login`, { email, password, rememberMe, captcha })
     );
   },
   logoutRequest() {
@@ -79,6 +79,12 @@ export const profileAPI = {
     formData.append('image', photoFile);
     return instance.put(`/profile/photo`, formData,
       { headers: { 'Content-Type': 'multipart/form-data' } });
+  },
+};
+
+export const securityAPI = {
+  getCaptcha() {
+    return instance.get('/security/get-captcha-url');
   },
 };
 

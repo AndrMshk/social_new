@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../bll/store';
 import { useNavigate } from 'react-router-dom';
 import { loginAsyncActions } from '../../bll/login/login-reducer';
 
-const { login } = loginAsyncActions;
+const { login, getCaptcha } = loginAsyncActions;
 
 export const Login: React.FC = () => {
 
@@ -13,10 +13,10 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
-  const isAuth = useAppSelector(state => state.login.isAuth);
+  const { isAuth, captchaUrl } = useAppSelector(state => state.login);
   const isLoading = useAppSelector(state => state.app.isLoading);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: { email: string, password: string, rememberMe: boolean, captcha: string | null }) => {
     dispatch(login(values));
     form.resetFields();
   };
@@ -62,6 +62,26 @@ export const Login: React.FC = () => {
         <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
           <Checkbox disabled={isLoading}>Remember me</Checkbox>
         </Form.Item>
+        {captchaUrl &&
+        <div>
+          <img
+            src={captchaUrl}
+            alt="captcha"
+            onClick={() => {dispatch(getCaptcha());}}
+            style={{ cursor: 'pointer' }}
+          />
+          <Form.Item
+            label="captcha"
+            name="captcha"
+            rules={[
+              { required: true, message: 'Please input the word' },
+              { type: 'string', message: 'Incorrect word' },
+            ]}
+          >
+            <Input disabled={isLoading} />
+          </Form.Item>
+        </div>
+        }
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit" disabled={isLoading}>
             Submit

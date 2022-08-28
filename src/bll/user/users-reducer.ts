@@ -105,6 +105,7 @@ const getIsFriend = createAsyncThunk('users/get-is-friend',
     }
   });
 
+
 export const usersAsyncActions = { setUsers, setFriends, follow, unFollow, getIsFriend };
 
 const slice = createSlice({
