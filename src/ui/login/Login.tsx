@@ -28,26 +28,22 @@ export const Login: React.FC = () => {
   }, [isAuth]);
 
   return (
-    <div
-      className={style.container}
-    >
+    <div className={style.container}>
       <Form
         form={form}
         name="basic"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: false }}
-        onFinish={onFinish}
-      >
+        onFinish={onFinish}>
         <Form.Item
           label="Username"
           name="email"
           rules={[
             { required: true, message: 'Please input your username!' },
             { type: 'email', message: 'Incorrect email' },
-          ]}
-        >
-          <Input disabled={isLoading} />
+          ]}>
+          <Input />
         </Form.Item>
         <Form.Item
           label="Password"
@@ -55,9 +51,8 @@ export const Login: React.FC = () => {
           rules={[
             { required: true, message: 'Please input your password!' },
             { min: 3, message: 'Too short password' },
-          ]}
-        >
-          <Input.Password disabled={isLoading} />
+          ]}>
+          <Input.Password />
         </Form.Item>
         <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
           <Checkbox disabled={isLoading}>Remember me</Checkbox>
@@ -76,16 +71,12 @@ export const Login: React.FC = () => {
             rules={[
               { required: true, message: 'Please input the word' },
               { type: 'string', message: 'Incorrect word' },
-            ]}
-          >
-            <Input disabled={isLoading} />
+            ]}>
+            <Input />
           </Form.Item>
-        </div>
-        }
+        </div>}
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" disabled={isLoading}>
-            Submit
-          </Button>
+          <Button type="primary" htmlType="submit" disabled={isLoading}>Submit</Button>
         </Form.Item>
       </Form>
     </div>

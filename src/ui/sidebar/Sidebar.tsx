@@ -44,9 +44,8 @@ export const SidebarComponent: React.FC = () => {
 
   const items: MenuProps['items'] = [
     getItem(<Link to="/profile">Profile</Link>, 'myProfile', <UserOutlined />),
-    getItem(<Link to="/messages">Messages</Link>, 'messages', <MailOutlined />),
     getItem(<Link to="/users">Users</Link>, 'users', <TeamOutlined />),
-    getItem('Followed users', 'user', null, followedUsers),
+    getItem('Friends', 'user', null, followedUsers),
   ];
 
   useEffect(() => {

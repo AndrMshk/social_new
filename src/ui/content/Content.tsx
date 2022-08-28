@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Messages } from './messages/Messages';
 import { Profile } from './profile/Profile';
 import { Users } from './users/Users';
 import { Login } from '../login/Login';
@@ -31,7 +30,6 @@ export const ContentComponent = () => {
       <Route path={'/'} element={<Navigate to={'/profile'} />} />
       <Route path="/profile/:userId" element={<Profile />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/messages" element={<Messages />} />
       <Route path="/users" element={<Users />} />
       <Route path="/login" element={<Login />} />
     </Routes>
