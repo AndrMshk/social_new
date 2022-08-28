@@ -5,7 +5,7 @@ const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   withCredentials: true,
   headers: {
-    'API-KEY': 'abb3a345-b7d8-4f0f-8c61-af2582f7869f',
+    'API-KEY': 'dc396fb0-66ab-4ec7-918c-0d405b64fa3d',
   },
 });
 
@@ -64,6 +64,19 @@ export const profileAPI = {
     );
   },
   updateProfile(updatedProfile: UpdateProfileModelType) {
+    // fields is required problems with backend
+    Object.entries(updatedProfile)
+      .forEach(([key, value]) => {
+        if (!value) {
+          if (typeof value === 'boolean') {
+            // @ts-ignore
+            updatedProfile[key] = false;
+          } else {
+            // @ts-ignore
+            updatedProfile[key] = '_';
+          }
+        }
+      });
     return instance.put(`/profile`, updatedProfile);
   },
   getStatus(userId: number) {
@@ -95,4 +108,24 @@ type GetUsersParamsType = {
   friend?: boolean
 }
 
-type UpdateProfileModelType = {}
+type UpdateProfileModelType = {
+  aboutMe?: string
+  contacts?: {
+    facebook?: string
+    github?: string
+    instagram?: string
+    mainLink?: string
+    twitter?: string
+    vk?: string
+    website?: string
+    youtube?: string
+  }
+  fullName?: string
+  lookingForAJob?: boolean
+  lookingForAJobDescription?: string
+  photos?: {
+    large?: string
+    small?: string
+  }
+  userId?: number
+}
