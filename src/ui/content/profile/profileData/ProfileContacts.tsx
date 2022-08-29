@@ -3,6 +3,7 @@ import { Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import { ProfileObjType } from '../Profile';
 import { updateProfileContacts } from '../../../../bll/profile/profile-reducer';
+import style from './profileContacts.module.scss';
 
 type ProfileContactsPropsType = {
   userId: number
@@ -24,55 +25,31 @@ export const ProfileContacts: FC<ProfileContactsPropsType> = React.memo(({ userI
   };
 
   return (
-    <div>
+    <div className={style.container}>
       <h3>Contacts:</h3>
       {userId === myUserId
-        ? <ul style={{ listStyleType: 'none' }}> {profile?.contacts && Object.entries(profile.contacts).map(([key, value]: any) =>
+        ? <ul style={{ listStyleType: 'none', padding: '0' }}> {profile?.contacts &&
+        Object.entries(profile.contacts).map(([key, value]: any) =>
           <li key={key}>
-            {key}:
+            <h4>{key} :</h4>
             <Paragraph style={{ display: 'inline-block', marginLeft: '5px' }}
                        editable={{ tooltip: false, onChange: (value) => updateProfileContactsHandler(key, value) }}>
-              {value ? value :  ''}
+              {value ? value : ''}
             </Paragraph>
           </li>,
         )}
         </ul>
         : profile?.contacts && Object.values(profile?.contacts).some(el => el)
-          ? <ul style={{ listStyleType: 'none' }}> {Object.entries(profile?.contacts).map(([key, value]: any) =>
-            value &&
-            <li key={key}>
-              <Paragraph editable={false}>
-                {key}: {value}
-              </Paragraph>
-            </li>)}
+          ? <ul style={{ listStyleType: 'none', padding: '0' }}> {Object.entries(profile?.contacts)
+            .map(([key, value]: any) =>
+              value &&
+              <li key={key}>
+                <Paragraph editable={false}>
+                  <h4>{key} :</h4> {value}
+                </Paragraph>
+              </li>)}
           </ul>
           : <h4>Fields are empty</h4>}
     </div>
   );
 });
-
-/*
-
-{profile?.contacts && Object.values(profile?.contacts).some(el => el)
-        ? userId === myUserId
-          ? <ul style={{ listStyleType: 'none' }}> {Object.entries(profile?.contacts).map(([key, value]: any) =>
-            <li key={key}>
-              {key}:
-              <Paragraph style={{ display: 'inline-block', marginLeft: '5px' }}
-                         editable={{ tooltip: false, onChange: (value) => updateProfileContactsHandler(key, value) }}>
-                {value || '________________'}
-              </Paragraph>
-            </li>,
-          )}
-          </ul>
-          : <ul style={{ listStyleType: 'none' }}> {Object.entries(profile?.contacts).map(([key, value]: any) =>
-            value &&
-            <li key={key}>
-              <Paragraph editable={false}>
-                {key}: {value}
-              </Paragraph>
-            </li>)}
-          </ul>
-        : <h4>Fields are empty</h4>}
-
-        */

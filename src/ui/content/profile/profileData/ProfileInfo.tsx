@@ -6,6 +6,7 @@ import test from '../../../../img/test.jpg';
 import { ProfileObjType } from '../Profile';
 import { setPhoto, setStatus, updateProfileAbout } from '../../../../bll/profile/profile-reducer';
 import { usersAsyncActions } from '../../../../bll/user/users-reducer';
+import style from './profileInfo.module.scss';
 
 type ProfileInfoPropsType = {
   userId: number
@@ -44,44 +45,52 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
   }, [isFollowedUser]);
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-      <div style={{ display: 'inline-block' }}>
-        <Typography.Title level={4} style={{ margin: 0 }}>{profile?.fullName}</Typography.Title>
-        {userId !== myUserId &&
-        <Switch
-          onChange={followingToggleHandler}
-          checkedChildren={<CheckOutlined />}
-          unCheckedChildren={<CloseOutlined />}
-          checked={isFollowedUser || false}
-          disabled={followingInProgress.some(el => el === userId)}
-        />}
-        <Paragraph
-          editable={userId === myUserId && { tooltip: false, onChange: changeStatusHandler }}>{status}</Paragraph>
-        AboutMe:
-        <Paragraph
-          editable={userId === myUserId && {
-            tooltip: false,
-            onChange: (value) => updateProfileAboutHandler('aboutMe', value),
-          }}>
-          {profile ? profile.aboutMe : 'Field is empty already'}
-        </Paragraph>
+    <div className={style.container}>
+      <div className={style.mainInfo}>
+        <div className={style.title}>
+          <Typography.Title level={4}>{profile?.fullName}</Typography.Title>
+          {userId !== myUserId &&
+          <Switch
+            onChange={followingToggleHandler}
+            checkedChildren={<CheckOutlined />}
+            unCheckedChildren={<CloseOutlined />}
+            checked={isFollowedUser || false}
+            disabled={followingInProgress.some(el => el === userId)}
+          />}
+          <Paragraph
+            editable={userId === myUserId && { tooltip: false, onChange: changeStatusHandler }}>{status}</Paragraph>
+          AboutMe:
+          <Paragraph
+            editable={userId === myUserId && {
+              tooltip: false,
+              onChange: (value) => updateProfileAboutHandler('aboutMe', value),
+            }}>
+            {profile ? profile.aboutMe : 'Field is empty already'}
+          </Paragraph>
+        </div>
+        <div className={style.ava}>
+          <Image width={200} src={profile?.photos.large || test} />
+          {userId === myUserId &&
+          <label className={style.changePhoto}>Change photo
+            <input
+              type="file"
+              onChange={e => {e.target.files && dispatch(setPhoto({ file: e.target.files[0] }));}} />
+          </label>}
+        </div>
       </div>
-      <div style={{ display: 'inline-block' }}>
-        <Image width={200} src={profile?.photos.large || test} />
-        {userId === myUserId &&
-        <input type="file" onChange={e => {e.target.files && dispatch(setPhoto({ file: e.target.files[0] }));}} />}
-      </div>
-      <div style={{ display: 'inline-block' }}>
-        <Typography.Title level={5} style={{ margin: 0 }}>
+      <div className={style.workInfo}>
+        <Typography.Title level={5}>
           Looking for a job:
           {userId !== myUserId
-            ? profile?.lookingForAJob ? 'YES' : 'PIZDIT'
+            ? <span style={{ marginLeft: '5px' }}>
+              {profile?.lookingForAJob ? 'Yes' : 'No'}
+            </span>
             : <Switch
+              className={style.switch}
               onChange={(value) => updateProfileAboutHandler('lookingForAJob', value)}
               checkedChildren={<CheckOutlined />}
               unCheckedChildren={<CloseOutlined />}
               checked={profile?.lookingForAJob}
-              style={{ marginLeft: '5px' }}
             />
           }
         </Typography.Title>

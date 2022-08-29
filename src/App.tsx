@@ -35,7 +35,7 @@ const App: React.FC = () => {
       </Space></div>;
   }
 
-  const errorModal = () => {
+  const ErrorModal = () => {
     Modal.error({
       title: 'Error',
       content: (<div>{error}</div>),
@@ -45,15 +45,17 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Layout>
+      <Layout className={'main'}>
         <Header className="header"><HeaderComponent /></Header>
-        <Layout className="content">
-          {isAuth && <Sider><SidebarComponent /></Sider>}
-          <Content><ContentComponent /></Content>
-        </Layout>
+        {isAuth && <div className="contentMain">
+          <Layout >
+            <Sider className="sidebar"><SidebarComponent /></Sider>
+          </Layout>
+          <Content className="content"><ContentComponent /></Content>
+        </div>}
         <Footer className="footer"><FooterComponent /></Footer>
       </Layout>
-      {error && errorModal()}
+      {error && ErrorModal()}
     </>
   );
 };

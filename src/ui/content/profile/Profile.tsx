@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import style from './style.module.scss';
+import style from './profile.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProfileInfo } from './profileData/ProfileInfo';

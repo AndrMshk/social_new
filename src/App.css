@@ -1,11 +1,30 @@
 .header {
-    background-color: #7b7b7b;
+  background-color: #7b7b7b;
+  color: white;
 }
+
 .footer {
   background-color: #7b7b7b;
+  color: white;
 }
+
 .content {
   background-color: #e6f7ff;
-  height: 800px;
+}
+
+.contentMain {
+  background-color: #ffffff;
+  display: flex;
+  min-height: 800px;
+}
+
+.main {
+  background-color: #ffffff;
+  height: 100%;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  height: 100%;
 }
 

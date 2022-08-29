@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { MailOutlined, UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
 import { usersAsyncActions } from '../../bll/user/users-reducer';
+import style from './sidebar.module.scss'
 
 const { setFriends } = usersAsyncActions;
 
@@ -53,12 +54,14 @@ export const SidebarComponent: React.FC = () => {
   }, [followedUsers.length]);
 
   return (
-    <Menu
-      onClick={onClick}
-      style={{ width: '100%', height: '100%', overflowY: 'scroll', overflowX: 'hidden' }}
-      defaultOpenKeys={['sub1']}
-      mode="inline"
-      items={items}
-    />
+    <div className={style.container} style={{height: '100%' }}>
+      <Menu
+        onClick={onClick}
+        className={style.menu}
+        defaultOpenKeys={['sub1']}
+        mode="inline"
+        items={items}
+      />
+    </div>
   );
 };
