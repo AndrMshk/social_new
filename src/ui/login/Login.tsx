@@ -29,6 +29,10 @@ export const Login: React.FC = () => {
 
   return (
     <div className={style.container}>
+      <div>
+        <p>Login: 70688kv@ukr.net</p>
+        <p>Password: 123123123123</p>
+      </div>
       <Form
         form={form}
         name="basic"
