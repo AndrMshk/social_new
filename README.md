@@ -1,4 +1,4 @@
-# TodoList
+# Social Network
 
 https://andrmshk.github.io/social_new
 
