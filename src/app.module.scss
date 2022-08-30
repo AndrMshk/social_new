@@ -1,0 +1,30 @@
+.container {
+	height: fit-content;
+	.header {
+		background-color: #7b7b7b;
+		color: white;
+	}
+	.footer {
+		background-color: #7b7b7b;
+		color: white;
+	}
+	.main {
+		background-color: #e6f7ff;
+		display: flex;
+		min-height: 800px;
+		section {
+			flex: none;
+		}
+	}
+	.content {
+		margin: 30px 40px 0;
+	}
+}
+
+.loading {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh
+}
+

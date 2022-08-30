@@ -1,12 +1,12 @@
 import { Layout, Modal, Space, Spin } from 'antd';
 import React, { useEffect } from 'react';
-import './App.css';
 import { FooterComponent } from './ui/footer/Footer';
 import { useAppDispatch, useAppSelector } from './bll/store';
 import { HeaderComponent } from './ui/header/Header';
 import { SidebarComponent } from './ui/sidebar/Sidebar';
 import { ContentComponent } from './ui/content/Content';
 import { setAppErrorReducer, setAppInitialized } from './bll/app/app-reducer';
+import style from './app.module.scss';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -22,17 +22,7 @@ const App: React.FC = () => {
   }, []);
 
   if (!isInitialized) {
-    return <div style={
-      {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }
-    }>
-      <Space size="large">
-        <Spin size="large" />
-      </Space></div>;
+    return <div className="loading"><Space size="large"><Spin size="large" /></Space></div>;
   }
 
   const ErrorModal = () => {
@@ -45,15 +35,13 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Layout className={'main'}>
-        <Header className="header"><HeaderComponent /></Header>
-        {isAuth && <div className="contentMain">
-          <Layout >
-            <Sider className="sidebar"><SidebarComponent /></Sider>
-          </Layout>
-          <Content className="content"><ContentComponent /></Content>
-        </div>}
-        <Footer className="footer"><FooterComponent /></Footer>
+      <Layout className={style.container}>
+        <Header className={style.header}><HeaderComponent /></Header>
+        <div className={style.main}>
+          {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
+          <Content className={style.content}><ContentComponent /></Content>
+        </div>
+        <Footer className={style.footer}><FooterComponent /></Footer>
       </Layout>
       {error && ErrorModal()}
     </>
