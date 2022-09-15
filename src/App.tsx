@@ -22,7 +22,7 @@ const App: React.FC = () => {
   }, []);
 
   if (!isInitialized) {
-    return <div className="loading"><Space size="large"><Spin size="large" /></Space></div>;
+    return <div className={style.loading}><Space size="large"><Spin size="large" /></Space></div>;
   }
 
   const ErrorModal = () => {

@@ -35,7 +35,6 @@ export const Profile = () => {
     }
   }, [userId]);
 
-  console.log(profile);
   if (isLoading) {
     return (
       <Spin tip="Loading...">
