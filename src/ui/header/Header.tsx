@@ -16,17 +16,14 @@ export const HeaderComponent = () => {
   const { isAuth, email } = useAppSelector(state => state.login);
 
   return (
-
       <div className={style.main}>
-        <Col span={8}><img src={test} alt="logo" style={{ height: '30px' }} /></Col>
-        <Col span={8}>{email || null}</Col>
-        <Col span={8}>
+        <div><img src={test} alt="logo" style={{ height: '30px' }} /></div>
+        <div>{email || null}</div>
+        <div>
           {isAuth
             ? <Button onClick={() => dispatch(logout())}>Exit</Button>
             : <Button onClick={() => navigate('/login')}>Login</Button>}
-        </Col>
+        </div>
       </div>
-
-
   );
 };
