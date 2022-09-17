@@ -1,6 +1,6 @@
 import { ProfileType } from '../../dal/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootStateType } from '../store';
+import { DispatchType, RootStateType } from '../store';
 import { profileAPI } from '../../dal/api';
 import axios from 'axios';
 import { handleAppError, handleNetworkError } from '../../helpers/error-util';
@@ -61,15 +61,17 @@ export const setStatus = createAsyncThunk('profile/set-status',
     }
   });
 
-export const updateProfileAbout = createAsyncThunk('profile/update-profile-about',
-  async(params: { contact: string, value: string | boolean }, { dispatch, getState, rejectWithValue }) => {
-    const state = getState() as RootStateType;
-    const currentProfile = state.profile.profile;
+export const updateProfileAbout = createAsyncThunk<{ contact: string, value: string | boolean },
+  { contact: string, value: string | boolean },
+  { dispatch: DispatchType, state: RootStateType, rejectWithValue: { errorMessage: string } }>(
+  'profile/update-profile-about',
+  async({ value, contact }, { dispatch, getState, rejectWithValue }) => {
+    const currentProfile = getState().profile.profile;
     try {
       dispatch(setIsLoading({ isLoading: true }));
-      const res = await profileAPI.updateProfile({ ...currentProfile, [params.contact]: params.value });
+      const res = await profileAPI.updateProfile({ ...currentProfile, [contact]: value });
       if (res.data.resultCode == 0) {
-        return { contact: params.contact, value: params.value };
+        return { contact, value };
       } else {
         handleAppError(res.data, dispatch);
         return rejectWithValue('some error');
@@ -85,19 +87,27 @@ export const updateProfileAbout = createAsyncThunk('profile/update-profile-about
     }
   });
 
-export const updateProfileContacts = createAsyncThunk('profile/update-profile-contacts',
-  async(params: { contact: string, value: string }, { dispatch, getState, rejectWithValue }) => {
-    const state = getState() as RootStateType;
-    const currentProfile = state.profile.profile;
+export const updateProfileContacts = createAsyncThunk<// Return type of the payload creator
+  { contact: string, value: string },
+  // First argument to the payload creator
+  { contact: string; value: string },
+  {
+    // Optional fields for defining thunkApi field types
+    dispatch: DispatchType
+    state: RootStateType
+    rejectWithValue: { errorMessage: string }
+  }>('profile/update-profile-contacts',
+  async({ contact, value }, { getState, dispatch, rejectWithValue }) => {
+    const currentProfile = getState().profile.profile;
     try {
       dispatch(setIsLoading({ isLoading: true }));
       const res = await profileAPI.updateProfile(
         {
           ...currentProfile,
-          contacts: { ...currentProfile?.contacts, [params.contact]: params.value },
+          contacts: { ...currentProfile?.contacts, [contact]: value },
         });
       if (res.data.resultCode === 0) {
-        return { contact: params.contact, value: params.value };
+        return { contact, value };
       } else {
         handleAppError(res.data, dispatch);
         return rejectWithValue('some error');

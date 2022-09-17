@@ -3,7 +3,7 @@ import { UserType } from '../../dal/types';
 import { usersAPI } from '../../dal/api';
 import axios from 'axios';
 import { handleAppError, handleNetworkError } from '../../helpers/error-util';
-import { RootStateType } from '../store';
+import { DispatchType, RootStateType } from '../store';
 import { setIsFollowedUserReducer } from '../profile/profile-reducer';
 
 const setUsers = createAsyncThunk('users/set-users',
@@ -40,44 +40,47 @@ const setFriends = createAsyncThunk('users/set-friends',
     }
   });
 
-const follow = createAsyncThunk('users/follow-to-user',
-  async(params: { userId: number }, { dispatch, getState, rejectWithValue }) => {
-    const state = getState() as RootStateType;
-    try {
-      dispatch(toggleFollowingInProgressReducer({ id: params.userId, followingInProgress: true }));
-      const res = await usersAPI.followPostRequest(params.userId);
-      if (res.resultCode === 0) {
-        dispatch(setIsFollowedUserReducer({ isFollowed: true }));
-        const followedUser = state.users.users.filter(el => el.id === params.userId);
-        const currentFollowedUsers = state.users.followedUsers.concat(followedUser);
-        dispatch(setFriendsReducer({ users: currentFollowedUsers }));
-        return { id: params.userId, isFollowed: true };
-      } else {
-        handleAppError(res.data, dispatch);
-        return rejectWithValue('some error');
-      }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        handleNetworkError(err.message, dispatch);
-        return rejectWithValue(err.message);
-      }
-    } finally {
-      dispatch(toggleFollowingInProgressReducer({ id: params.userId, followingInProgress: false }));
+const follow = createAsyncThunk<{ id: number, isFollowed: boolean } | undefined,
+  { userId: number },
+  { dispatch: DispatchType, state: RootStateType, rejectWithValue: { errorMessage: string } }>
+('users/follow-to-user', async({ userId }, { dispatch, getState, rejectWithValue }) => {
+  try {
+    dispatch(toggleFollowingInProgressReducer({ id: userId, followingInProgress: true }));
+    const res = await usersAPI.followPostRequest(userId);
+    if (res.resultCode === 0) {
+      dispatch(setIsFollowedUserReducer({ isFollowed: true }));
+      const followedUser = getState().users.users.filter(el => el.id === userId);
+      const currentFollowedUsers = getState().users.followedUsers.concat(followedUser);
+      dispatch(setFriendsReducer({ users: currentFollowedUsers }));
+      return { id: userId, isFollowed: true };
+    } else {
+      handleAppError(res.data, dispatch);
+      return rejectWithValue('some error');
     }
-  });
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      handleNetworkError(err.message, dispatch);
+      return rejectWithValue(err.message);
+    }
+  } finally {
+    dispatch(toggleFollowingInProgressReducer({ id: userId, followingInProgress: false }));
+  }
+});
 
-const unFollow = createAsyncThunk('users/unFollow-to-user',
-  async(params: { userId: number }, { dispatch, getState, rejectWithValue }) => {
-    const state = getState() as RootStateType;
+const unFollow = createAsyncThunk<{ id: number, isFollowed: boolean } | undefined,
+  { userId: number },
+  { dispatch: DispatchType, state: RootStateType, rejectWithValue: { errorMessage: string } }>
+('users/unFollow-to-user',
+  async({ userId }, { dispatch, getState, rejectWithValue }) => {
     try {
-      dispatch(toggleFollowingInProgressReducer({ id: params.userId, followingInProgress: true }));
-      const res = await usersAPI.unFollowDeleteRequest(params.userId);
+      dispatch(toggleFollowingInProgressReducer({ id: userId, followingInProgress: true }));
+      const res = await usersAPI.unFollowDeleteRequest(userId);
       if (res.resultCode === 0) {
-        dispatch(toggleFollowingInProgressReducer({ id: params.userId, followingInProgress: false }));
+        dispatch(toggleFollowingInProgressReducer({ id: userId, followingInProgress: false }));
         dispatch(setIsFollowedUserReducer({ isFollowed: false }));
-        const currentFollowedUsers = state.users.followedUsers.filter(el => el.id !== params.userId);
+        const currentFollowedUsers = getState().users.followedUsers.filter(el => el.id !== userId);
         dispatch(setFriendsReducer({ users: currentFollowedUsers }));
-        return { id: params.userId, isFollowed: false };
+        return { id: userId, isFollowed: false };
       } else {
         handleAppError(res.data, dispatch);
         return rejectWithValue('some error');
@@ -88,7 +91,7 @@ const unFollow = createAsyncThunk('users/unFollow-to-user',
         return rejectWithValue(err.message);
       }
     } finally {
-      dispatch(toggleFollowingInProgressReducer({ id: params.userId, followingInProgress: false }));
+      dispatch(toggleFollowingInProgressReducer({ id: userId, followingInProgress: false }));
     }
   });
 
@@ -104,7 +107,6 @@ const getIsFriend = createAsyncThunk('users/get-is-friend',
       }
     }
   });
-
 
 export const usersAsyncActions = { setUsers, setFriends, follow, unFollow, getIsFriend };
 
