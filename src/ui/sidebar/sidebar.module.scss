@@ -1,4 +1,7 @@
 .container {
 	background-color: white;
 	width: 240px;
+	@media screen and (max-width: 700px) {
+		display: none;
+	}
 }

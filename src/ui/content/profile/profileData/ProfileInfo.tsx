@@ -52,10 +52,10 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
             unCheckedChildren={<CloseOutlined />}
             checked={isFollowedUser || false}
             disabled={followingInProgress.some(el => el === userId)} />}
-          <Paragraph
+          <Paragraph className={style.item}
             editable={userId === myUserId && { tooltip: false, onChange: changeStatusHandler }}>{status}</Paragraph>
           AboutMe:
-          <Paragraph
+          <Paragraph className={style.item}
             editable={userId === myUserId && {
               tooltip: false,
               onChange: (value) => updateProfileAboutHandler('aboutMe', value),

@@ -1,9 +1,19 @@
 .container {
-	width: 100%;
 	height: 100%;
+	width: 800px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	min-width: 1024px;
+	padding: 10px;
+	@media screen and (max-width: 900px) {
+		width: auto;
+	}
+	form {
+		div {
+			@media screen and (max-width: 650px) {
+				max-width: 200px;
+			}
+		}
+	}
 }

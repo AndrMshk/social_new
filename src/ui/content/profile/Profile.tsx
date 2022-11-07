@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import style from './profile.module.scss';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ProfileInfo } from './profileData/ProfileInfo';
 import { ProfileContacts } from './profileData/ProfileContacts';
 import { getStatus, setProfile } from '../../../bll/profile-reducer';
@@ -13,15 +13,12 @@ const { getIsFriend } = usersAsyncActions;
 export const Profile = () => {
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const params = useParams();
 
-  const { userId: myUserId, isAuth } = useAppSelector(state => state.login);
+  const { userId: myUserId } = useAppSelector(state => state.login);
   const { isLoading, profile } = useAppSelector(state => state.profile);
 
   let userId = params.userId ? +params.userId : myUserId as number;
-
-  useEffect(() => {!isAuth && navigate('/login');}, [isAuth]);
 
   useEffect(() => {
     if (userId) {

@@ -1,12 +1,27 @@
 .container {
 	width: 650px;
 	padding-bottom: 20px;
+	@media screen and (max-width: 1000px) {
+		width: 350px;
+	}
 	.search {
 		width: 200px;
+		@media screen and (max-width: 450px) {
+			display: block;
+			margin: 0 auto;
+		}
 	}
 	.table {
 		td {
 			max-width: 100px;
+		}
+		@media screen and (max-width: 1000px) {
+			th:nth-child(3) {
+				display: none;
+			}
+			td:nth-child(3) {
+				display: none;
+			}
 		}
 	}
 }
