@@ -1,26 +1,4 @@
 .container {
-	height: 100%;
 	background-color: white;
-	.menu {
-		width: 100%;
-		max-height: 800px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		&::-webkit-scrollbar {
-			width: 20px;
-		}
-		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px grey;
-			border-radius: 10px;
-		}
-		&::-webkit-scrollbar-thumb {
-			background-color: #E6F7FF;
-			border-radius: 10px;
-			box-shadow: inset 0 0 5px grey;
-			&:hover {
-				background-color: #7B7B7B;
-				box-shadow: inset 0 0 5px #E6F7FF;
-			}
-		}
-	}
+	width: 240px;
 }

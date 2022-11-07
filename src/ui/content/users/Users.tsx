@@ -12,7 +12,7 @@ import style from './users.module.scss';
 const { Search } = Input;
 const { follow, unFollow, setUsers } = usersAsyncActions;
 
-export const Users: React.FC = () => {
+export const Users = () => {
 
   const dispatch = useAppDispatch();
 
@@ -70,11 +70,9 @@ export const Users: React.FC = () => {
   ];
 
   const onSearch = (value: string) => {
-    if (value === '') {
-      dispatch(setSearchUserNameReducer({ name: undefined }));
-    } else {
-      dispatch(setSearchUserNameReducer({ name: value }));
-    }
+    value === ''
+      ? dispatch(setSearchUserNameReducer({ name: undefined }))
+      : dispatch(setSearchUserNameReducer({ name: value }));
   };
 
   useEffect(() => {
@@ -106,8 +104,7 @@ export const Users: React.FC = () => {
         }
         columns={columns}
         dataSource={users}
-        size={'middle'}
-      />
+        size={'middle'} />
     </div>
   );
 };

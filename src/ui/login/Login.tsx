@@ -11,6 +11,7 @@ export const Login: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const [form] = Form.useForm();
 
   const { isAuth, captchaUrl } = useAppSelector(state => state.login);
@@ -21,11 +22,7 @@ export const Login: React.FC = () => {
     form.resetFields();
   };
 
-  useEffect(() => {
-    if (isAuth) {
-      navigate('/profile');
-    }
-  }, [isAuth]);
+  useEffect(() => { isAuth && navigate('/profile'); }, [isAuth]);
 
   return (
     <div className={style.container}>

@@ -10,8 +10,6 @@ import { usersAsyncActions } from '../../../bll/users-reducer';
 
 const { getIsFriend } = usersAsyncActions;
 
-export type ProfileObjType = { [key: string]: any } | null
-
 export const Profile = () => {
 
   const dispatch = useAppDispatch();

@@ -6,7 +6,7 @@ import { TeamOutlined } from '@ant-design/icons/lib';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
 import { usersAsyncActions } from '../../bll/users-reducer';
-import style from './sidebar.module.scss'
+import style from './sidebar.module.scss';
 
 const { setFriends } = usersAsyncActions;
 
@@ -18,20 +18,14 @@ function getItem(
   icon?: React.ReactNode,
   children?: MenuItem[],
   type?: 'group',
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as MenuItem;
-}
+): MenuItem {return { key, icon, children, label, type } as MenuItem;}
 
 export const SidebarComponent: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const followedUsers = useAppSelector(state => state.users.followedUsers).map(el => ({ label: el.name, key: el.id }));
 
   const onClick: MenuProps['onClick'] = e => {
     if (e.keyPath[1] === 'user') {
@@ -40,8 +34,6 @@ export const SidebarComponent: React.FC = () => {
       navigate(`/`);
     }
   };
-  const followedUsers = useAppSelector(state => state.users.followedUsers)
-    .map(el => ({ label: el.name, key: el.id }));
 
   const items: MenuProps['items'] = [
     getItem(<Link to="/profile">Profile</Link>, 'myProfile', <UserOutlined />),
@@ -49,12 +41,10 @@ export const SidebarComponent: React.FC = () => {
     getItem('Friends', 'user', null, followedUsers),
   ];
 
-  useEffect(() => {
-    dispatch(setFriends());
-  }, [followedUsers.length]);
+  useEffect(() => {dispatch(setFriends());}, [followedUsers.length]);
 
   return (
-    <div className={style.container} style={{height: '100%' }}>
+    <div className={style.container}>
       <Menu
         onClick={onClick}
         className={style.menu}

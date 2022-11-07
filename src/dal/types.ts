@@ -45,31 +45,12 @@ export type ProfileType = {
   }
 }
 
-export type UpdateProfileModelType = {
-  aboutMe?: string
-  contacts?: {
-    facebook?: string
-    github?: string
-    instagram?: string
-    mainLink?: string
-    twitter?: string
-    vk?: string
-    website?: string
-    youtube?: string
-  }
-  fullName?: string
-  lookingForAJob?: boolean
-  lookingForAJobDescription?: string
-  photos?: {
-    large?: string
-    small?: string
-  }
-  userId?: number
-}
-
 export type GetUsersParamsType = {
   count: number
   page: number
   term?: string
   friend?: boolean
 }
+
+export type ProfileObjType = { [key: string]: any } | null
+export type UpdateProfileModelObjType = {[key: string]: any}

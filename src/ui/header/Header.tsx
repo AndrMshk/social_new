@@ -18,12 +18,11 @@ export const HeaderComponent = () => {
   return (
     <header className={style.main}>
       <div className={style.container}>
-        <img src={test} alt="logo" style={{ height: '30px' }} />
-        <div>{email || null}</div>
-        <div>
-          {isAuth
-            ? <Button onClick={() => dispatch(logout())}>Exit</Button>
-            : <Button onClick={() => navigate('/login')}>Login</Button>}
+        <img src={test} alt="logo" />
+        {email && <div>{email}</div>}
+        <div>{isAuth
+          ? <Button onClick={() => dispatch(logout())}>Exit</Button>
+          : <Button onClick={() => navigate('/login')}>Login</Button>}
         </div>
       </div>
     </header>

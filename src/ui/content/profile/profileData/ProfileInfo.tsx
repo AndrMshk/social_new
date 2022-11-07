@@ -3,16 +3,18 @@ import { Image, Switch, Typography } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons/lib';
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import test from '../../../../img/test.jpg';
-import { ProfileObjType } from '../Profile';
 import { setPhoto, setStatus, updateProfileAbout } from '../../../../bll/profile-reducer';
 import { usersAsyncActions } from '../../../../bll/users-reducer';
 import style from './profileInfo.module.scss';
+import { ProfileObjType } from '../../../../dal/types';
 
 type ProfileInfoPropsType = {
   userId: number
   profile: ProfileObjType
 }
+
 const { follow, unFollow } = usersAsyncActions;
+const { Paragraph } = Typography;
 
 export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profile }) => {
 
@@ -22,25 +24,19 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
   const myUserId = useAppSelector(state => state.login.userId);
   const followingInProgress = useAppSelector(state => state.users.followingInProgress);
 
-  const { Paragraph } = Typography;
-
   const changeStatusHandler = useCallback((newStatus: string) => {
-    if (newStatus !== status) {
-      dispatch(setStatus({ status: newStatus }));
-    }
+    newStatus !== status && dispatch(setStatus({ status: newStatus }));
   }, []);
 
   const updateProfileAboutHandler = (contact: string, value: string | boolean) => {
-    if (!(profile) || profile[contact] !== value) {
-      dispatch(updateProfileAbout({ contact, value }));
-    }
+    !(profile) || profile[contact] !== value && dispatch(updateProfileAbout({ contact, value }));
   };
 
   const followingToggleHandler = useCallback(() => {
-    if (!isFollowedUser && userId) {
-      dispatch(follow({ userId: userId }));
-    } else if (userId) {
-      dispatch(unFollow({ userId: userId }));
+    if (userId) {
+      isFollowedUser
+        ? dispatch(unFollow({ userId: userId }))
+        : dispatch(follow({ userId: userId }));
     }
   }, [isFollowedUser]);
 
@@ -55,8 +51,7 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
             checkedChildren={<CheckOutlined />}
             unCheckedChildren={<CloseOutlined />}
             checked={isFollowedUser || false}
-            disabled={followingInProgress.some(el => el === userId)}
-          />}
+            disabled={followingInProgress.some(el => el === userId)} />}
           <Paragraph
             editable={userId === myUserId && { tooltip: false, onChange: changeStatusHandler }}>{status}</Paragraph>
           AboutMe:
@@ -82,25 +77,20 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = React.memo(({ userId, profi
         <Typography.Title level={5}>
           Looking for a job:
           {userId !== myUserId
-            ? <span style={{ marginLeft: '5px' }}>
-              {profile?.lookingForAJob ? 'Yes' : 'No'}
-            </span>
+            ? <span className={style.value}>{profile?.lookingForAJob ? 'Yes' : 'No'}</span>
             : <Switch
               className={style.switch}
               onChange={(value) => updateProfileAboutHandler('lookingForAJob', value)}
               checkedChildren={<CheckOutlined />}
               unCheckedChildren={<CloseOutlined />}
-              checked={profile?.lookingForAJob}
-            />
-          }
+              checked={profile?.lookingForAJob} />}
         </Typography.Title>
         {profile?.lookingForAJob &&
-        <Paragraph editable={userId === myUserId && {
-          tooltip: false,
-          onChange: (value) => updateProfileAboutHandler('lookingForAJobDescription', value),
-        }}>
-          {profile.lookingForAJobDescription}
-        </Paragraph>}
+        <Paragraph editable={
+          userId === myUserId && {
+            tooltip: false,
+            onChange: (value) => updateProfileAboutHandler('lookingForAJobDescription', value),
+          }}>{profile.lookingForAJobDescription}</Paragraph>}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { CONST } from './env';
-import { GetUsersParamsType, LoginParamsType, ResponseTypeAPI, UpdateProfileModelType } from './types';
+import { GetUsersParamsType, LoginParamsType, ResponseTypeAPI, UpdateProfileModelObjType } from './types';
 
 const instance = axios.create({
   baseURL: CONST.BASE_URL,
@@ -53,15 +53,13 @@ export const profileAPI = {
     return (instance.get(`/profile/${userId}`)
     );
   },
-  updateProfile(updatedProfile: UpdateProfileModelType) {
+  updateProfile(updatedProfile: UpdateProfileModelObjType) {
     Object.entries(updatedProfile)
       .forEach(([key, value]) => {
         if (!value) {
           if (typeof value === 'boolean') {
-            // @ts-ignore
             updatedProfile[key] = false;
           } else {
-            // @ts-ignore
             updatedProfile[key] = '_';
           }
         }

@@ -8,7 +8,7 @@ import { ContentComponent } from './ui/content/Content';
 import { setAppErrorReducer, setAppInitialized } from './bll/app-reducer';
 import style from './app.module.scss';
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 const App: React.FC = () => {
 
@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <div className={style.container}>
         <HeaderComponent />
         <main className={style.main}>
-          {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
+          {isAuth && <SidebarComponent />}
           <Content className={style.content}><ContentComponent /></Content>
         </main>
         <FooterComponent />
