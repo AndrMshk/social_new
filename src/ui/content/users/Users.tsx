@@ -91,7 +91,7 @@ export const Users: React.FC = () => {
               placeholder="input search text" allowClear onSearch={onSearch}
               style={{ width: 200 }}/>
       <Table
-        style={{ height: '400px' }}
+        style={{ height: '400px', width: '650px' }}
         loading={loading}
         pagination={
           {

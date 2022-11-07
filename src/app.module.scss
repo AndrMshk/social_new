@@ -1,5 +1,6 @@
 .container {
-	height: fit-content;
+	height: 100vh;
+	background-color: red;
 	.header {
 		background-color: #7b7b7b;
 		color: white;
@@ -9,9 +10,10 @@
 		color: white;
 	}
 	.main {
+		max-width: 1024px;
+		margin: 0 auto;
 		background-color: #e6f7ff;
 		display: flex;
-		min-height: 800px;
 		section {
 			flex: none;
 		}

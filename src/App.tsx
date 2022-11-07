@@ -34,17 +34,29 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
-      <Layout className={style.container}>
-        <Header className={style.header}><HeaderComponent /></Header>
-        <div className={style.main}>
-          {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
-          <Content className={style.content}><ContentComponent /></Content>
-        </div>
-        <Footer className={style.footer}><FooterComponent /></Footer>
-      </Layout>
-      {error && ErrorModal()}
-    </>
+    // <>
+    //   <div className={style.container}>
+    //     <Header className={style.header}><HeaderComponent /></Header>
+    //     <main className={style.main}>
+    //       {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
+    //       <Content className={style.content}><ContentComponent /></Content>
+    //     </main>
+    //     <footer className={style.footer}><FooterComponent /></footer>
+    //   </div>
+    //   {error && ErrorModal()}
+    // </>
+
+    <div className={style.container}>
+
+      <Header className={style.header}><HeaderComponent /></Header>
+      <main className={style.main}>
+        {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
+        <Content className={style.content}><ContentComponent /></Content>
+      </main>
+      <footer className={style.footer}><FooterComponent /></footer>
+
+
+    </div>
   );
 };
 
