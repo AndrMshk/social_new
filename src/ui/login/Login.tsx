@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import style from './style.module.scss';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
 import { useNavigate } from 'react-router-dom';
-import { loginAsyncActions } from '../../bll/login/login-reducer';
+import { loginAsyncActions } from '../../bll/login-reducer';
 
 const { login, getCaptcha } = loginAsyncActions;
 

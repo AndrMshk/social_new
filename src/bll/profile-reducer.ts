@@ -1,9 +1,9 @@
-import { ProfileType } from '../../dal/types';
+import { ProfileType } from '../dal/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DispatchType, RootStateType } from '../store';
-import { profileAPI } from '../../dal/api';
+import { DispatchType, RootStateType } from './store';
+import { profileAPI } from '../dal/api';
 import axios from 'axios';
-import { handleAppError, handleNetworkError } from '../../helpers/error-util';
+import { handleAppError, handleNetworkError } from '../helpers/error-util';
 
 export const setProfile = createAsyncThunk('profile/set-profile',
   async(params: { userId: number }, { dispatch, rejectWithValue }) => {
@@ -91,8 +91,8 @@ export const updateProfileContacts = createAsyncThunk<// Return type of the payl
   { contact: string, value: string },
   // First argument to the payload creator
   { contact: string; value: string },
+  // Optional fields for defining thunkApi field types
   {
-    // Optional fields for defining thunkApi field types
     dispatch: DispatchType
     state: RootStateType
     rejectWithValue: { errorMessage: string }
@@ -145,27 +145,14 @@ export const setPhoto = createAsyncThunk('profile/set-profile-photo',
     }
   });
 
-type InitialStateType = {
-  postsData: { id: number, message: string, likeCounts: number }[]
-  profile: ProfileType | null
-  isFollowedUser: null | boolean
-  status: string
-  isLoading: boolean
-}
-
 const slice = createSlice({
   name: 'profile',
   initialState: {
-    postsData: [
-      { id: 1, message: 'hello', likeCounts: 0 },
-      { id: 2, message: 'hello', likeCounts: 0 },
-      { id: 3, message: 'hello', likeCounts: 0 },
-    ],
-    profile: null,
-    isFollowedUser: null,
+    profile: null as ProfileType | null,
+    isFollowedUser: null as null | boolean,
     status: '',
     isLoading: false,
-  } as InitialStateType,
+  },
   reducers: {
     setIsFollowedUserReducer(state, action: PayloadAction<{ isFollowed: null | boolean }>) {
       state.isFollowedUser = action.payload.isFollowed;
@@ -202,8 +189,6 @@ const slice = createSlice({
 
 export const profileReducer = slice.reducer;
 export const { setIsFollowedUserReducer, setIsLoading } = slice.actions;
-
-
 
 
 

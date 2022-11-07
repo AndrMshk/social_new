@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProfileInfo } from './profileData/ProfileInfo';
 import { ProfileContacts } from './profileData/ProfileContacts';
-import { getStatus, setProfile } from '../../../bll/profile/profile-reducer';
+import { getStatus, setProfile } from '../../../bll/profile-reducer';
 import { Spin } from 'antd';
-import { usersAsyncActions } from '../../../bll/user/users-reducer';
+import { usersAsyncActions } from '../../../bll/users-reducer';
 
 const { getIsFriend } = usersAsyncActions;
 

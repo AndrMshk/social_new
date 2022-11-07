@@ -4,8 +4,8 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons/lib';
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import test from '../../../../img/test.jpg';
 import { ProfileObjType } from '../Profile';
-import { setPhoto, setStatus, updateProfileAbout } from '../../../../bll/profile/profile-reducer';
-import { usersAsyncActions } from '../../../../bll/user/users-reducer';
+import { setPhoto, setStatus, updateProfileAbout } from '../../../../bll/profile-reducer';
+import { usersAsyncActions } from '../../../../bll/users-reducer';
 import style from './profileInfo.module.scss';
 
 type ProfileInfoPropsType = {

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authAPI, profileAPI } from '../../dal/api';
-import { getStatus, setProfile } from '../profile/profile-reducer';
-import { loginLogoutReducer } from '../login/login-reducer';
-import { handleAppError, handleNetworkError } from '../../helpers/error-util';
+import { authAPI, profileAPI } from '../dal/api';
+import { getStatus, setProfile } from './profile-reducer';
+import { loginLogoutReducer } from './login-reducer';
+import { handleAppError, handleNetworkError } from '../helpers/error-util';
 import axios from 'axios';
 
 export const setAppInitialized = createAsyncThunk('app/set-initialized',
@@ -26,29 +26,18 @@ export const setAppInitialized = createAsyncThunk('app/set-initialized',
     return { isInitialized: true };
   });
 
-type InitialStateType = {
-  isLoading: boolean
-  error: string | null
-  isInitialized: boolean
-  me: {
-    userId: number | null
-    email: string | null
-    login: string | null
-  }
-}
-
 const slice = createSlice({
   name: 'app',
   initialState: {
     isLoading: false,
-    error: null,
+    error: null as string | null,
     isInitialized: false,
     me: {
-      userId: null,
-      email: null,
-      login: null,
+      userId: null as number | null,
+      email: null as string | null,
+      login: null as string | null,
     },
-  } as InitialStateType,
+  },
   reducers: {
     setAppStatusReducer(state, action: PayloadAction<{ isLoading: boolean }>) {
       state.isLoading = action.payload.isLoading;
@@ -66,5 +55,4 @@ const slice = createSlice({
 
 export const appReducer = slice.reducer;
 export const { setAppStatusReducer, setAppErrorReducer } = slice.actions;
-
 

@@ -6,7 +6,8 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../../bll/store';
 import { UserType } from '../../../dal/types';
 import { Link } from 'react-router-dom';
-import { setSearchUserNameReducer, usersAsyncActions } from '../../../bll/user/users-reducer';
+import { setSearchUserNameReducer, usersAsyncActions } from '../../../bll/users-reducer';
+import style from './users.module.scss';
 
 const { Search } = Input;
 const { follow, unFollow, setUsers } = usersAsyncActions;
@@ -40,7 +41,7 @@ export const Users: React.FC = () => {
       render: (photos) =>
         <>{photos.small
           ? <Image width={50} src={photos.small} />
-          : <img src={photos.small ? photos.small : avatar} alt='avatar' style={{ width: '50px' }} />
+          : <img src={photos.small ? photos.small : avatar} alt="avatar" style={{ width: '50px' }} />
         }</>,
     },
     {
@@ -85,13 +86,13 @@ export const Users: React.FC = () => {
   };
 
   return (
-    <>
+    <div className={style.container}>
       <Search value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
               placeholder="input search text" allowClear onSearch={onSearch}
-              style={{ width: 200 }}/>
+              className={style.search} />
       <Table
-        style={{ height: '400px', width: '650px' }}
+        className={style.table}
         loading={loading}
         pagination={
           {
@@ -107,6 +108,6 @@ export const Users: React.FC = () => {
         dataSource={users}
         size={'middle'}
       />
-    </>
+    </div>
   );
 };

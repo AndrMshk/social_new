@@ -1,37 +1,31 @@
 import axios, { AxiosResponse } from 'axios';
-import { LoginParamsType, ResponseTypeAPI } from './types';
+import { CONST } from './env';
+import { GetUsersParamsType, LoginParamsType, ResponseTypeAPI, UpdateProfileModelType } from './types';
 
 const instance = axios.create({
-  baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+  baseURL: CONST.BASE_URL,
   withCredentials: true,
-  headers: {
-    'API-KEY': 'abb3a345-b7d8-4f0f-8c61-af2582f7869f',
-  },
+  headers: { 'API-KEY': CONST.API_KEY },
 });
 
 export const usersAPI = {
   getUsers(params: GetUsersParamsType) {
-    return (
-      instance
-        .get(`users`, { params: { ...params } }));
+    return (instance.get(`users`, { params: { ...params } }));
   },
   followPostRequest(userId: number) {
-    return (
-      instance
+    return (instance
         .post(`follow/${userId}`)
         .then((response) => response.data)
     );
   },
   unFollowDeleteRequest(userId: number) {
-    return (
-      instance
+    return (instance
         .delete(`/follow/${userId}`)
         .then((response) => response.data)
     );
   },
   getIsFollowRequest(userId: number) {
-    return (
-      instance
+    return (instance
         .get(`/follow/${userId}`)
         .then(response => response.data)
     );
@@ -40,15 +34,12 @@ export const usersAPI = {
 
 export const authAPI = {
   me() {
-    return (
-      instance
-        .get<{ email: string, password: string, rememberMe?: boolean, captcha?: string },
-          AxiosResponse<ResponseTypeAPI<{ id: number, login: string, email: string }>>>(`auth/me`)
+    return (instance.get<{ email: string, password: string, rememberMe?: boolean, captcha?: string },
+        AxiosResponse<ResponseTypeAPI<{ id: number, login: string, email: string }>>>(`auth/me`)
     );
   },
   loginRequest(email: string, password: string, rememberMe: boolean = false, captcha: string | null = null) {
-    return (
-      instance.post<LoginParamsType, AxiosResponse<ResponseTypeAPI<{ userId: number }>>>
+    return (instance.post<LoginParamsType, AxiosResponse<ResponseTypeAPI<{ userId: number }>>>
       (`/auth/login`, { email, password, rememberMe, captcha })
     );
   },
@@ -59,12 +50,10 @@ export const authAPI = {
 
 export const profileAPI = {
   getProfile(userId: number) {
-    return (
-      instance.get(`/profile/${userId}`)
+    return (instance.get(`/profile/${userId}`)
     );
   },
   updateProfile(updatedProfile: UpdateProfileModelType) {
-    // fields is required problems with backend
     Object.entries(updatedProfile)
       .forEach(([key, value]) => {
         if (!value) {
@@ -101,31 +90,6 @@ export const securityAPI = {
   },
 };
 
-type GetUsersParamsType = {
-  count: number
-  page: number
-  term?: string
-  friend?: boolean
-}
 
-type UpdateProfileModelType = {
-  aboutMe?: string
-  contacts?: {
-    facebook?: string
-    github?: string
-    instagram?: string
-    mainLink?: string
-    twitter?: string
-    vk?: string
-    website?: string
-    youtube?: string
-  }
-  fullName?: string
-  lookingForAJob?: boolean
-  lookingForAJobDescription?: string
-  photos?: {
-    large?: string
-    small?: string
-  }
-  userId?: number
-}
+
+

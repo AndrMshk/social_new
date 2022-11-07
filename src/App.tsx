@@ -5,10 +5,10 @@ import { useAppDispatch, useAppSelector } from './bll/store';
 import { HeaderComponent } from './ui/header/Header';
 import { SidebarComponent } from './ui/sidebar/Sidebar';
 import { ContentComponent } from './ui/content/Content';
-import { setAppErrorReducer, setAppInitialized } from './bll/app/app-reducer';
+import { setAppErrorReducer, setAppInitialized } from './bll/app-reducer';
 import style from './app.module.scss';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const App: React.FC = () => {
 
@@ -17,13 +17,7 @@ const App: React.FC = () => {
   const { isInitialized, error } = useAppSelector(state => state.app);
   const isAuth = useAppSelector(state => state.login.isAuth);
 
-  useEffect(() => {
-    dispatch(setAppInitialized());
-  }, []);
-
-  if (!isInitialized) {
-    return <div className={style.loading}><Space size="large"><Spin size="large" /></Space></div>;
-  }
+  useEffect(() => {dispatch(setAppInitialized()); }, []);
 
   const ErrorModal = () => {
     Modal.error({
@@ -33,30 +27,22 @@ const App: React.FC = () => {
     });
   };
 
+  if (!isInitialized) {
+    return <div className={style.loading}><Space size="large"><Spin size="large" /></Space></div>;
+  }
+
   return (
-    // <>
-    //   <div className={style.container}>
-    //     <Header className={style.header}><HeaderComponent /></Header>
-    //     <main className={style.main}>
-    //       {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
-    //       <Content className={style.content}><ContentComponent /></Content>
-    //     </main>
-    //     <footer className={style.footer}><FooterComponent /></footer>
-    //   </div>
-    //   {error && ErrorModal()}
-    // </>
-
-    <div className={style.container}>
-
-      <Header className={style.header}><HeaderComponent /></Header>
-      <main className={style.main}>
-        {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
-        <Content className={style.content}><ContentComponent /></Content>
-      </main>
-      <footer className={style.footer}><FooterComponent /></footer>
-
-
-    </div>
+    <>
+      <div className={style.container}>
+        <HeaderComponent />
+        <main className={style.main}>
+          {isAuth && <Layout><Sider><SidebarComponent /></Sider> </Layout>}
+          <Content className={style.content}><ContentComponent /></Content>
+        </main>
+        <FooterComponent />
+      </div>
+      {error && ErrorModal()}
+    </>
   );
 };
 

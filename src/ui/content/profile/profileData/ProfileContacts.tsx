@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import { ProfileObjType } from '../Profile';
-import { updateProfileContacts } from '../../../../bll/profile/profile-reducer';
+import { updateProfileContacts } from '../../../../bll/profile-reducer';
 import style from './profileContacts.module.scss';
 
 type ProfileContactsPropsType = {

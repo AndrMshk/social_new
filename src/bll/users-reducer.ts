@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserType } from '../../dal/types';
-import { usersAPI } from '../../dal/api';
+import { UserType } from '../dal/types';
+import { usersAPI } from '../dal/api';
 import axios from 'axios';
-import { handleAppError, handleNetworkError } from '../../helpers/error-util';
-import { DispatchType, RootStateType } from '../store';
-import { setIsFollowedUserReducer } from '../profile/profile-reducer';
+import { handleAppError, handleNetworkError } from '../helpers/error-util';
+import { DispatchType, RootStateType } from './store';
+import { setIsFollowedUserReducer } from './profile-reducer';
 
 const setUsers = createAsyncThunk('users/set-users',
   async(

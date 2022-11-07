@@ -15,11 +15,7 @@ export const ContentComponent = () => {
   const isLoading = useAppSelector(state => state.app.isLoading);
   const isAuth = useAppSelector(state => state.login.isAuth);
 
-  useEffect(() => {
-    if (!isAuth || location.pathname !== '/login') {
-      navigate('/login');
-    }
-  }, [isAuth]);
+  useEffect(() => {!isAuth || location.pathname !== '/login' && navigate('/login'); }, [isAuth]);
 
   if (isLoading) {
     return <div className={style.container}><Spin size="large" /></div>;

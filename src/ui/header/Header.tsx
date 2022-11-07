@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../bll/store';
 import test from '../../img/test.jpg';
-import { loginAsyncActions } from '../../bll/login/login-reducer';
+import { loginAsyncActions } from '../../bll/login-reducer';
 import style from './header.module.scss';
 
 const { logout } = loginAsyncActions;
@@ -16,7 +16,7 @@ export const HeaderComponent = () => {
   const { isAuth, email } = useAppSelector(state => state.login);
 
   return (
-    <div className={style.main}>
+    <header className={style.main}>
       <div className={style.container}>
         <img src={test} alt="logo" style={{ height: '30px' }} />
         <div>{email || null}</div>
@@ -26,6 +26,6 @@ export const HeaderComponent = () => {
             : <Button onClick={() => navigate('/login')}>Login</Button>}
         </div>
       </div>
-    </div>
+    </header>
   );
 };

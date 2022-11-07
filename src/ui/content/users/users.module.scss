@@ -1,0 +1,12 @@
+.container {
+	width: 650px;
+	padding-bottom: 20px;
+	.search {
+		width: 200px;
+	}
+	.table {
+		td {
+			max-width: 100px;
+		}
+	}
+}

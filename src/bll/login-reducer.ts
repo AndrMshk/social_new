@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginParamsType } from '../../dal/types';
-import { setAppStatusReducer } from '../app/app-reducer';
-import { authAPI, securityAPI } from '../../dal/api';
-import { handleAppError, handleNetworkError } from '../../helpers/error-util';
+import { LoginParamsType } from '../dal/types';
+import { setAppStatusReducer } from './app-reducer';
+import { authAPI, securityAPI } from '../dal/api';
+import { handleAppError, handleNetworkError } from '../helpers/error-util';
 import axios from 'axios';
 
 const login = createAsyncThunk('login/login',
@@ -64,20 +64,11 @@ const getCaptcha = createAsyncThunk('login/get-capcha',
     }
   });
 
-export const loginAsyncActions = { login, logout, getCaptcha };
-
-type InitialStateType = {
-  userId: number | null
-  email: string | null
-  isAuth: boolean
-  captchaUrl: string | null
-}
-
 const slice = createSlice({
   name: 'login',
   initialState: {
     userId: null,
-    email: '',
+    email: null,
     isAuth: false,
     captchaUrl: null,
   } as InitialStateType,
@@ -91,17 +82,21 @@ const slice = createSlice({
   extraReducers: builder => {
     builder.addCase(login.fulfilled, (state, action) => ({ ...state, ...action.payload }))
       .addCase(logout.fulfilled, (state, action) => ({ ...state, ...action.payload }))
-      .addCase(getCaptcha.fulfilled, (state, action) => {
-        debugger
-        state.captchaUrl = action.payload?.captchaUrl;
-      });
+      .addCase(getCaptcha.fulfilled, (state, action) => {state.captchaUrl = action.payload?.captchaUrl;});
   },
 
 });
 
 export const loginReducer = slice.reducer;
 export const { loginLogoutReducer } = slice.actions;
+export const loginAsyncActions = { login, logout, getCaptcha };
 
+type InitialStateType = {
+  userId: number | null
+  email: string | null
+  isAuth: boolean
+  captchaUrl: string | null
+}
 
 
 
